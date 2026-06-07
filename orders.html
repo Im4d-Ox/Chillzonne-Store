@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orders - ChillZone</title>
+    <link rel="stylesheet" href="templatemo-chillzone-fashion.css">
+    <style>
+        .orders-container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #1a1a1a, #0a0a0a);
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .orders-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .orders-header h1 {
+            color: var(--text-light, #ffffff);
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+        
+        .orders-header p {
+            color: var(--text-muted, #999);
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+        
+        .back-to-shop {
+            display: inline-block;
+            background: var(--accent, #ff3366);
+            color: white;
+            padding: 12px 24px;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .back-to-shop:hover {
+            background: var(--accent-hover, #ff1a4d);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 51, 102, 0.3);
+        }
+        
+        .orders-info {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 4px solid var(--accent, #ff3366);
+        }
+        
+        .orders-info h3 {
+            color: var(--text-light, #ffffff);
+            margin-bottom: 10px;
+        }
+        
+        .orders-info p {
+            color: var(--text-muted, #999);
+            line-height: 1.6;
+        }
+        
+        .orders-info ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .orders-info li {
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-light, #ffffff);
+        }
+        
+        .orders-info li:last-child {
+            border-bottom: none;
+        }
+        
+        .orders-info li strong {
+            color: var(--accent, #ff3366);
+            font-weight: 600;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--accent, #ff3366), var(--accent-hover, #ff1a4d));
+            color: white;
+            padding: 16px 32px;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 51, 102, 0.4);
+        }
+        
+        @media (max-width: 768px) {
+            .orders-container {
+                margin: 20px;
+                padding: 15px;
+            }
+            
+            .orders-header h1 {
+                font-size: 24px;
+            }
+            
+            .orders-header p {
+                font-size: 14px;
+            }
+            
+            .back-to-shop {
+                display: block;
+                text-align: center;
+                margin-bottom: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="orders-container">
+        <div class="orders-header">
+            <h1>📦 Your Orders</h1>
+            <p>Track and manage your orders</p>
+            <a href="index.html" class="back-to-shop">← Back to Shop</a>
+        </div>
+        
+        <div class="orders-info">
+            <h3>How to Check Your Orders</h3>
+            <p>There are two ways to view your order information:</p>
+            <ul>
+                <li><strong>On this page:</strong> View your recent orders below</li>
+                <li><strong>Admin Panel:</strong> <a href="admin-dashboard.html">Access the admin dashboard</a> for detailed order management</li>
+            </ul>
+        </div>
+        
+        <div class="orders-info">
+            <h3>Order Status</h3>
+            <p><strong>Pending:</strong> Order received, awaiting processing</p>
+            <p><strong>Processing:</strong> Order is being prepared for shipment</p>
+            <p><strong>Shipped:</strong> Order is on its way to you</p>
+            <p><strong>Delivered:</strong> Order has been successfully delivered</p>
+            <p><strong>Cancelled:</strong> Order was cancelled</p>
+        </div>
+        
+        <div class="orders-info">
+            <h3>Need Help?</h3>
+            <p>Our customer support team is here to assist you with any questions about your orders.</p>
+            <div style="margin-top: 20px;">
+                <a href="mailto:support@chillzone.games" class="cta-button">Contact Support</a>
+            </div>
+        </div>
+    </div>
+    
+    <script src="simple-order-manager.js"></script>
+</body>
+</html>

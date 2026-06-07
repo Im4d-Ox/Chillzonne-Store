@@ -1,0 +1,1651 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - ChillZone</title>
+    <link rel="stylesheet" href="templatemo-chillzone-fashion.css">
+    
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="firebase-config.js"></script>
+    <style>
+        .admin-dashboard {
+            display: flex;
+            min-height: 100vh;
+            background: var(--bg-dark);
+        }
+        
+        .admin-sidebar {
+            width: 250px;
+            background: rgba(255, 255, 255, 0.05);
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 20px;
+        }
+        
+        .admin-sidebar h3 {
+            color: var(--text-light);
+            margin-bottom: 30px;
+            font-size: 20px;
+        }
+        
+        .sidebar-menu {
+            list-style: none;
+        }
+        
+        .sidebar-menu li {
+            margin-bottom: 10px;
+        }
+        
+        .sidebar-menu a {
+            color: var(--text-muted);
+            text-decoration: none;
+            display: block;
+            padding: 10px 15px;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+        
+        .sidebar-menu a:hover,
+        .sidebar-menu a.active {
+            background: var(--accent);
+            color: white;
+        }
+        
+        .admin-main {
+            flex: 1;
+            padding: 30px;
+        }
+        
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .header-left h1 {
+            color: var(--text-light);
+            font-size: 28px;
+            margin: 0;
+        }
+        
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .back-to-shop-btn {
+            background: transparent;
+            color: var(--text-muted);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 8px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 13px;
+            transition: all 0.3s ease;
+        }
+        
+        .back-to-shop-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-light);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+        
+        .admin-user {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .admin-user span {
+            color: var(--text-light);
+        }
+        
+        .logout-btn {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.3s ease;
+        }
+        
+        .logout-btn:hover {
+            background: var(--accent-hover);
+        }
+        
+        .content-section {
+            display: none;
+        }
+        
+        .content-section.active {
+            display: block;
+        }
+        
+        .section-header {
+            margin-bottom: 25px;
+        }
+        
+        .section-header h2 {
+            color: var(--text-light);
+            font-size: 22px;
+            margin-bottom: 10px;
+        }
+        
+        .section-header p {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+        
+        .admin-form {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            color: var(--text-light);
+            margin-bottom: 8px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            color: white;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--accent);
+            background: rgba(255, 255, 255, 0.08);
+        }
+        
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        
+        .btn-primary {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            background: var(--accent-hover);
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-light);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-left: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .data-table {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .data-table table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .data-table th,
+        .data-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .data-table th {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-light);
+            font-weight: 500;
+            font-size: 13px;
+            text-transform: uppercase;
+        }
+        
+        .data-table td {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+        
+        .data-table tr:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .btn-edit {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        
+        .btn-delete {
+            background: #f44336;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        
+        .success-message {
+            background: rgba(76, 175, 80, 0.1);
+            border: 1px solid #4CAF50;
+            color: #4CAF50;
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            font-size: 13px;
+            display: none;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .stat-card h3 {
+            color: var(--accent);
+            font-size: 32px;
+            margin-bottom: 5px;
+        }
+        
+        .stat-card p {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-dashboard">
+        <div class="admin-sidebar">
+            <h3>ChillZone Admin</h3>
+            <ul class="sidebar-menu">
+                <li><a href="#" class="menu-item active" data-section="dashboard">📊 Dashboard</a></li>
+                <li><a href="#" class="menu-item" data-section="products">🎮 Products</a></li>
+                <li><a href="#" class="menu-item" data-section="pages">📄 Pages</a></li>
+                <li><a href="#" class="menu-item" data-section="settings">⚙️ Settings</a></li>
+                <!-- <li><a href="#" class="menu-item" data-section="testimonials">⭐ Testimonials</a></li> -->
+                <!-- <li><a href="#" class="menu-item" data-section="contact">📞 Contact</a></li> -->
+                <!-- <li><a href="#" class="menu-item" data-section="hero">🚀 Hero Section</a></li> -->
+                <!-- <li><a href="#" class="menu-item" data-section="orders">📦 Orders</a></li> -->
+            </ul>
+        </div>
+        
+        <div class="admin-main">
+            <div class="admin-header">
+                <div class="header-left">
+                    <h1>Admin Dashboard</h1>
+                </div>
+                <div class="header-right">
+                    <a href="index.html" class="back-to-shop-btn">← Back to Shop</a>
+                    <div class="admin-user">
+                        <span>Welcome, <span id="adminUsername">Admin</span></span>
+                        <button class="logout-btn" onclick="adminLogout()">Logout</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Dashboard Section -->
+            <div class="content-section active" id="dashboard">
+                <div class="section-header">
+                    <h2>Dashboard Overview</h2>
+                    <p>Manage your gaming platform content</p>
+                </div>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <h3 id="totalProducts">8</h3>
+                        <p>Total Products</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3 id="totalCategories">4</h3>
+                        <p>Categories</p>
+                    </div>
+                    <!-- <div class="stat-card">
+                        <h3 id="totalTestimonials">3</h3>
+                        <p>Testimonials</p>
+                    </div> -->
+                    <div class="stat-card">
+                        <h3>100%</h3>
+                        <p>System Status</p>
+                    </div>
+                </div>
+                
+                <div class="section-header">
+                    <h2>Recent Activity</h2>
+                    <p>Latest updates to your platform</p>
+                </div>
+                
+                <div class="data-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Activity</th>
+                                <th>User</th>
+                                <th>Section</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody id="activityTableBody">
+                            <!-- Activity logs will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- Products Section -->
+            <div class="content-section" id="products">
+                <div class="section-header">
+                    <h2>Product Management</h2>
+                    <p>Add, edit, or remove products that appear on your products page</p>
+                </div>
+
+                <div class="success-message" id="productSuccess">Product saved successfully!</div>
+
+                <div class="admin-form">
+                    <div class="form-header">
+                        <h3 style="color: var(--text-light); margin-bottom: 20px;">Add/Edit Product</h3>
+                        <p style="color: var(--text-muted); margin-bottom: 20px;">Create or modify products that will appear on your products page.</p>
+                    </div>
+                    <form id="productForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="productName">Product Name</label>
+                                <input type="text" id="productName" name="productName" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="productCategory">Category</label>
+                                <select id="productCategory" name="productCategory" required>
+                                    <option value="Games">Games</option>
+                                    <option value="FiveM Scripts">FiveM Scripts</option>
+                                    <option value="Tools">Tools</option>
+                                    <option value="Premium">Premium</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="productSubtitle">Subtitle</label>
+                                <input type="text" id="productSubtitle" name="productSubtitle" placeholder="Action Game" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="productPrice">Price</label>
+                                <input type="text" id="productPrice" name="productPrice" placeholder="From $29.99" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="productBadge">Badge</label>
+                                <select id="productBadge" name="productBadge">
+                                    <option value="New Arrival">New Arrival</option>
+                                    <option value="Bestseller">Bestseller</option>
+                                    <option value="Limited">Limited</option>
+                                    <option value="Trending">Trending</option>
+                                    <option value="Hot">Hot</option>
+                                    <option value="Exclusive">Exclusive</option>
+                                    <option value="Pre-Order">Pre-Order</option>
+                                    <option value="Essentials">Essentials</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="productImage">Main Image URL</label>
+                                <input type="text" id="productImage" name="productImage" placeholder="https://example.com/image.jpg">
+                            </div>
+                        </div>
+                        <div class="form-group full-width">
+                            <label for="productDescription">Description</label>
+                            <textarea id="productDescription" name="productDescription" rows="4" placeholder="Enter detailed product description..."></textarea>
+                        </div>
+                        <div class="form-group full-width">
+                            <label for="productFeatures">Features (one per line)</label>
+                            <textarea id="productFeatures" name="productFeatures" rows="4" placeholder="Multiplayer Battle Royale&#10;Customizable Weapons&#10;Multiple Game Modes&#10;High-Quality Graphics&#10;Cross-Platform Play&#10;Regular Updates"></textarea>
+                        </div>
+                        <div class="form-group full-width">
+                            <label for="productImages">Additional Image URLs (comma-separated)</label>
+                            <input type="text" id="productImages" name="productImages" placeholder="https://example.com/image1.jpg,https://example.com/image2.jpg">
+                        </div>
+                        <div style="display: flex; gap: 10px; margin-top: 20px;">
+                            <button type="submit" class="btn btn-primary">Save Product</button>
+                            <button type="button" class="btn btn-secondary" onclick="resetProductForm()">Clear Form</button>
+                            <button type="button" class="btn btn-danger" onclick="previewProducts()" style="margin-left: auto;">Preview Products Page</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="data-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Category</th>
+                                <th>Price</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="productsTableBody">
+                            <!-- Products will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- Pages Section -->
+            <div class="content-section" id="pages">
+                <div class="section-header">
+                    <h2>Page Management</h2>
+                    <p>Edit and preview your website pages</p>
+                </div>
+                
+                <div class="success-message" id="pageSuccess">Page saved successfully!</div>
+                
+                <div class="admin-form">
+                    <div class="form-header">
+                        <h3 style="color: var(--text-light); margin-bottom: 20px;">Select Page to Edit</h3>
+                        <p style="color: var(--text-muted); margin-bottom: 20px;">Choose a page to edit its content and preview changes</p>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="pageSelector">Select Page</label>
+                        <select id="pageSelector" onchange="loadPageContent()">
+                            <option value="">Choose a page...</option>
+                            <option value="index.html">Home Page</option>
+                            <option value="products.html">Products Page</option>
+                            <option value="about.html">About Page</option>
+                            <option value="contact.html">Contact Page</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="admin-form" id="pageEditor" style="display: none;">
+                    <div class="form-header">
+                        <h3 style="color: var(--text-light); margin-bottom: 20px;">Edit Page Content</h3>
+                        <p style="color: var(--text-muted); margin-bottom: 20px;">Modify the page content below. Changes will be saved and reflected on the live site.</p>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="pageTitle">Page Title</label>
+                        <input type="text" id="pageTitle" name="pageTitle" placeholder="Enter page title">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="pageMetaDescription">Meta Description</label>
+                        <input type="text" id="pageMetaDescription" name="pageMetaDescription" placeholder="SEO meta description">
+                    </div>
+                    
+                    <div class="form-group full-width">
+                        <label for="pageContent">Page Content (HTML)</label>
+                        <textarea id="pageContent" name="pageContent" rows="20" placeholder="Enter HTML content..." style="font-family: 'Courier New', monospace; font-size: 13px;"></textarea>
+                    </div>
+                    
+                    <div style="display: flex; gap: 10px; margin-top: 20px;">
+                        <button type="button" class="btn btn-primary" onclick="savePage()">Save Page</button>
+                        <button type="button" class="btn btn-secondary" onclick="previewPage()">Preview Page</button>
+                        <button type="button" class="btn btn-secondary" onclick="resetPageForm()">Clear</button>
+                    </div>
+                </div>
+                
+                <div class="admin-form" id="pagePreview" style="display: none;">
+                    <div class="form-header">
+                        <h3 style="color: var(--text-light); margin-bottom: 20px;">Page Preview</h3>
+                        <p style="color: var(--text-muted); margin-bottom: 20px;">This is how your page will appear to visitors</p>
+                    </div>
+                    
+                    <div style="border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; padding: 20px; background: rgba(255, 255, 255, 0.02); max-height: 500px; overflow-y: auto;">
+                        <div id="previewContent">
+                            <!-- Preview content will be loaded here -->
+                        </div>
+                    </div>
+                    
+                    <div style="display: flex; gap: 10px; margin-top: 20px;">
+                        <button type="button" class="btn btn-primary" onclick="openLivePreview()">Open in New Tab</button>
+                        <button type="button" class="btn btn-secondary" onclick="closePreview()">Close Preview</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Settings Section -->
+            <div class="content-section" id="settings">
+                <div class="section-header">
+                    <h2>Store Settings</h2>
+                    <p>Configure your store preferences and currency</p>
+                </div>
+                
+                <div class="success-message" id="settingsSuccess">Settings saved successfully!</div>
+                
+                <div class="admin-form">
+                    <h3 style="color: var(--text-light); margin-bottom: 20px;">Currency Settings</h3>
+                    <form id="settingsForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="currency">Currency</label>
+                                <select id="currency" name="currency" required>
+                                    <option value="USD">USD - US Dollar ($)</option>
+                                    <option value="EUR">EUR - Euro (€)</option>
+                                    <option value="GBP">GBP - British Pound (£)</option>
+                                    <option value="JPY">JPY - Japanese Yen (¥)</option>
+                                    <option value="CAD">CAD - Canadian Dollar (C$)</option>
+                                    <option value="AUD">AUD - Australian Dollar (A$)</option>
+                                    <option value="CHF">CHF - Swiss Franc (Fr)</option>
+                                    <option value="CNY">CNY - Chinese Yuan (¥)</option>
+                                    <option value="INR">INR - Indian Rupee (₹)</option>
+                                    <option value="BRL">BRL - Brazilian Real (R$)</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="currencyPosition">Currency Position</label>
+                                <select id="currencyPosition" name="currencyPosition" required>
+                                    <option value="before">Before Price ($29.99)</option>
+                                    <option value="after">After Price (29.99$)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="storeName">Store Name</label>
+                            <input type="text" id="storeName" name="storeName" placeholder="ChillZone" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="storeEmail">Store Email</label>
+                            <input type="email" id="storeEmail" name="storeEmail" placeholder="store@chillzone.games" required>
+                        </div>
+                        <button type="submit" class="btn-primary">Save Settings</button>
+                        <button type="button" class="btn-secondary" onclick="resetSettingsForm()">Clear</button>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Testimonials Section -->
+            <div class="content-section" id="testimonials">
+                <div class="section-header">
+                    <h2>Testimonial Management</h2>
+                    <p>Manage customer reviews and feedback</p>
+                </div>
+                
+                <div class="success-message" id="testimonialSuccess">Testimonial saved successfully!</div>
+                
+                <div class="admin-form">
+                    <h3 style="color: var(--text-light); margin-bottom: 20px;">Add New Testimonial</h3>
+                    <form id="testimonialForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="testimonialName">Customer Name</label>
+                                <input type="text" id="testimonialName" name="testimonialName" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="testimonialRole">Role/Title</label>
+                                <input type="text" id="testimonialRole" name="testimonialRole" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="testimonialQuote">Testimonial</label>
+                            <textarea id="testimonialQuote" name="testimonialQuote" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="testimonialRating">Rating</label>
+                            <select id="testimonialRating" name="testimonialRating">
+                                <option value="5">★★★★★</option>
+                                <option value="4">★★★★☆</option>
+                                <option value="3">★★★☆☆</option>
+                                <option value="2">★★☆☆☆</option>
+                                <option value="1">★☆☆☆☆</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn-primary">Add Testimonial</button>
+                        <button type="button" class="btn-secondary" onclick="resetTestimonialForm()">Clear</button>
+                    </form>
+                </div>
+                
+                <div class="data-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Role</th>
+                                <th>Rating</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="testimonialsTableBody">
+                            <!-- Testimonials will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- Contact Section -->
+            <div class="content-section" id="contact">
+                <div class="section-header">
+                    <h2>Contact Information</h2>
+                    <p>Update contact details and addresses</p>
+                </div>
+                
+                <div class="success-message" id="contactSuccess">Contact information updated!</div>
+                
+                <div class="admin-form">
+                    <h3 style="color: var(--text-light); margin-bottom: 20px;">Update Contact Info</h3>
+                    <form id="contactForm">
+                        <div class="form-group">
+                            <label for="contactAddress">Address</label>
+                            <textarea id="contactAddress" name="contactAddress" rows="3">123 Gaming Street
+Silicon Valley, CA 94025
+Tech District</textarea>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="contactPhoneMain">Main Phone</label>
+                                <input type="text" id="contactPhoneMain" name="contactPhoneMain" value="+66 02 123 4567">
+                            </div>
+                            <div class="form-group">
+                                <label for="contactPhoneSupport">Support Phone</label>
+                                <input type="text" id="contactPhoneSupport" name="contactPhoneSupport" value="+66 02 123 4568">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="contactEmailSupport">Support Email</label>
+                                <input type="email" id="contactEmailSupport" name="contactEmailSupport" value="support@chillzone.games">
+                            </div>
+                            <div class="form-group">
+                                <label for="contactEmailDev">Developer Email</label>
+                                <input type="email" id="contactEmailDev" name="contactEmailDev" value="dev@chillzone.games">
+                            </div>
+                        </div>
+                        <button type="submit" class="btn-primary">Update Contact Info</button>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Hero Section -->
+            <div class="content-section" id="hero">
+                <div class="section-header">
+                    <h2>Hero Section</h2>
+                    <p>Update main landing page content</p>
+                </div>
+                
+                <div class="success-message" id="heroSuccess">Hero section updated!</div>
+                
+                <div class="admin-form">
+                    <h3 style="color: var(--text-light); margin-bottom: 20px;">Update Hero Content</h3>
+                    <form id="heroForm">
+                        <div class="form-group">
+                            <label for="heroBadge">Badge Text</label>
+                            <input type="text" id="heroBadge" name="heroBadge" value="New Gaming Collection 2025">
+                        </div>
+                        <div class="form-group">
+                            <label for="heroTitle1">Title Line 1</label>
+                            <input type="text" id="heroTitle1" name="heroTitle1" value="Best">
+                        </div>
+                        <div class="form-group">
+                            <label for="heroTitle2">Title Line 2 (with accent)</label>
+                            <input type="text" id="heroTitle2" name="heroTitle2" value="Gaming">
+                        </div>
+                        <div class="form-group">
+                            <label for="heroTitle3">Title Line 3</label>
+                            <input type="text" id="heroTitle3" name="heroTitle3" value="Experience">
+                        </div>
+                        <div class="form-group">
+                            <label for="heroDescription">Description</label>
+                            <textarea id="heroDescription" name="heroDescription" rows="3">Discover our premium collection of games and FiveM scripts where innovation meets gameplay. Each script and game is crafted to enhance your server and elevate your gaming experience.</textarea>
+                        </div>
+                        <button type="submit" class="btn-primary">Update Hero Section</button>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Orders Section -->
+            <div class="content-section" id="orders">
+                <div class="section-header">
+                    <h2>Order Management</h2>
+                    <p>View and manage customer orders and sales</p>
+                </div>
+
+                <div class="dashboard-grid">
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <div class="card-icon">📦</div>
+                        </div>
+                        <div class="card-value" id="totalOrders">0</div>
+                        <div class="card-label">Total Orders</div>
+                    </div>
+
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <div class="card-icon">💰</div>
+                        </div>
+                        <div class="card-value" id="totalRevenue">$0.00</div>
+                        <div class="card-label">Total Revenue</div>
+                    </div>
+
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <div class="card-icon">⏳</div>
+                        </div>
+                        <div class="card-value" id="pendingOrders">0</div>
+                        <div class="card-label">Pending Orders</div>
+                    </div>
+
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <div class="card-icon">✅</div>
+                        </div>
+                        <div class="card-value" id="completedOrders">0</div>
+                        <div class="card-label">Completed Orders</div>
+                    </div>
+                </div>
+
+                <div class="data-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Order ID</th>
+                                <th>Customer</th>
+                                <th>Items</th>
+                                <th>Total</th>
+                                <th>Status</th>
+                                <th>Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ordersTableBody">
+                            <!-- Orders will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- Categories Section -->
+            <div class="content-section" id="categories">
+                <div class="section-header">
+                    <h2>Category Management</h2>
+                    <p>Manage product categories</p>
+                </div>
+                
+                <div class="success-message" id="categorySuccess">Categories updated!</div>
+                
+                <div class="admin-form">
+                    <h3 style="color: var(--text-light); margin-bottom: 20px;">Update Categories</h3>
+                    <form id="categoryForm">
+                        <div id="categoryList">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Category 1</label>
+                                    <input type="text" name="category1" value="All" data-category-id="all">
+                                </div>
+                                <div class="form-group">
+                                    <label>Category 2</label>
+                                    <input type="text" name="category2" value="Games" data-category-id="games">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Category 3</label>
+                                    <input type="text" name="category3" value="FiveM Scripts" data-category-id="fivem">
+                                </div>
+                                <div class="form-group">
+                                    <label>Category 4</label>
+                                    <input type="text" name="category4" value="Premium" data-category-id="premium">
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn-primary">Update Categories</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Check authentication - only admin can access dashboard
+        if (localStorage.getItem('adminLoggedIn') !== 'true') {
+            window.location.href = 'admin-login.html';
+        }
+
+        // Display admin username
+        document.getElementById('adminUsername').textContent = localStorage.getItem('adminUsername') || 'Admin';
+
+        // Logging system
+        function logActivity(activity, section) {
+            const username = localStorage.getItem('adminUsername') || 'Admin';
+            const logs = JSON.parse(localStorage.getItem('adminLogs') || '[]');
+            
+            const newLog = {
+                activity: activity,
+                user: username,
+                section: section,
+                date: new Date().toISOString(),
+                timestamp: Date.now()
+            };
+            
+            logs.unshift(newLog); // Add to beginning of array
+            
+            // Keep only last 50 logs
+            if (logs.length > 50) {
+                logs.pop();
+            }
+            
+            localStorage.setItem('adminLogs', JSON.stringify(logs));
+            renderActivityLogs();
+        }
+
+        function renderActivityLogs() {
+            const logs = JSON.parse(localStorage.getItem('adminLogs') || '[]');
+            const tbody = document.getElementById('activityTableBody');
+            tbody.innerHTML = '';
+            
+            if (logs.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4" style="text-align: center; padding: 40px; color: var(--text-muted);">No recent activity</td></tr>';
+                return;
+            }
+            
+            logs.forEach(log => {
+                const row = tbody.insertRow();
+                const date = new Date(log.date);
+                const formattedDate = date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
+                
+                row.innerHTML = `
+                    <td><strong>${log.activity}</strong></td>
+                    <td>${log.user}</td>
+                    <td>${log.section}</td>
+                    <td>${formattedDate}</td>
+                `;
+            });
+        }
+
+        // Log login on page load
+        logActivity('Admin Login', 'Dashboard');
+
+        // Data storage (shared with products page)
+        let products = [];
+
+        let testimonials = [
+            { name: 'Sarah Chen', role: 'Server Owner', quote: 'ChillZone has completely transformed my FiveM server. The scripts are amazing and the performance is unmatched. Every feature feels like it was made by professional developers.', rating: 5 },
+            { name: 'Marcus Rodriguez', role: 'Game Developer', quote: 'The optimization combined with premium features is exactly what I was looking for. ChillZone proves you don\'t have to compromise on performance.', rating: 5 },
+            { name: 'Alexandra Kim', role: 'Community Manager', quote: 'I\'ve been using ChillZone scripts for two years now, and each update keeps exceeding my expectations. The code quality and support are consistently outstanding.', rating: 5 }
+        ];
+
+        // Load data from localStorage or Firebase
+        async function loadData() {
+            // Try loading from Firebase first
+            if (typeof db !== 'undefined') {
+                try {
+                    const productsDoc = await db.collection('storeData').doc('products').get();
+                    if (productsDoc.exists) {
+                        products = productsDoc.data().items || [];
+                    }
+                } catch (error) {
+                    console.log('Firebase load failed, using localStorage:', error.message);
+                }
+            }
+
+            // Fallback to localStorage
+            const savedProducts = localStorage.getItem('adminProducts');
+            const savedTestimonials = localStorage.getItem('adminTestimonials');
+
+            if (savedProducts && products.length === 0) products = JSON.parse(savedProducts);
+            if (savedTestimonials) testimonials = JSON.parse(savedTestimonials);
+
+            updateStats();
+            renderProducts();
+            renderTestimonials();
+            loadOrders();
+            renderActivityLogs();
+        }
+
+        // Save data to localStorage and Firebase
+        async function saveData() {
+            // Save to localStorage
+            localStorage.setItem('adminProducts', JSON.stringify(products));
+            localStorage.setItem('adminTestimonials', JSON.stringify(testimonials));
+
+            // Save to Firebase if available
+            if (typeof db !== 'undefined') {
+                try {
+                    await db.collection('storeData').doc('products').set({
+                        items: products,
+                        updatedAt: new Date().toISOString()
+                    });
+                    console.log('✅ Products saved to Firebase');
+                    alert('✅ Products saved to Firebase successfully!');
+                } catch (error) {
+                    console.error('❌ Firebase save failed:', error);
+                    alert('❌ Firebase save failed: ' + error.message + '\n\nData saved to localStorage only (will not sync across devices).');
+                }
+            } else {
+                console.error('❌ Firebase is not available');
+                alert('❌ Firebase is not available. Data saved to localStorage only (will not sync across devices).');
+            }
+
+            // Trigger storage event for real-time updates
+            window.dispatchEvent(new StorageEvent('storage', {
+                key: 'adminProducts',
+                newValue: JSON.stringify(products)
+            }));
+            window.dispatchEvent(new StorageEvent('storage', {
+                key: 'adminTestimonials',
+                newValue: JSON.stringify(testimonials)
+            }));
+        }
+
+        // Logout function
+        function adminLogout() {
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.removeItem('adminLoggedIn');
+                localStorage.removeItem('adminUsername');
+                window.location.href = 'admin-login.html';
+            }
+        }
+
+        // Orders management
+        function loadOrders() {
+            const orders = JSON.parse(localStorage.getItem('orders') || '[]');
+            renderOrders(orders);
+            updateOrderStats(orders);
+        }
+
+        function renderOrders(orders) {
+            const tbody = document.getElementById('ordersTableBody');
+            tbody.innerHTML = '';
+
+            if (orders.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 40px; color: var(--text-muted);">No orders yet</td></tr>';
+                return;
+            }
+
+            orders.forEach(order => {
+                const orderDate = new Date(order.date).toLocaleDateString();
+                const itemsCount = order.items.reduce((sum, item) => sum + item.quantity, 0);
+
+                const row = tbody.insertRow();
+                row.innerHTML = `
+                    <td><strong>${order.id}</strong></td>
+                    <td>
+                        <div>
+                            <div style="font-weight: 600;">${order.customer.name}</div>
+                            <div style="font-size: 12px; color: var(--text-muted);">${order.customer.email}</div>
+                        </div>
+                    </td>
+                    <td>${itemsCount} item${itemsCount !== 1 ? 's' : ''}</td>
+                    <td style="font-weight: 600; color: var(--accent);">$${order.total.toFixed(2)}</td>
+                    <td>
+                        <select onchange="updateOrderStatus('${order.id}', this.value)" style="padding: 4px 8px; border-radius: 4px; border: 1px solid var(--card-border); background: rgba(255,255,255,0.1); color: white;">
+                            <option value="pending" ${order.status === 'pending' ? 'selected' : ''}>Pending</option>
+                            <option value="processing" ${order.status === 'processing' ? 'selected' : ''}>Processing</option>
+                            <option value="shipped" ${order.status === 'shipped' ? 'selected' : ''}>Shipped</option>
+                            <option value="completed" ${order.status === 'completed' ? 'selected' : ''}>Completed</option>
+                            <option value="cancelled" ${order.status === 'cancelled' ? 'selected' : ''}>Cancelled</option>
+                        </select>
+                    </td>
+                    <td>${orderDate}</td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn-edit" onclick="viewOrderDetails('${order.id}')">View</button>
+                        </div>
+                    </td>
+                `;
+            });
+        }
+
+        function updateOrderStats(orders) {
+            const totalOrders = orders.length;
+            const totalRevenue = orders.reduce((sum, order) => sum + order.total, 0);
+            const pendingOrders = orders.filter(order => order.status === 'pending').length;
+            const completedOrders = orders.filter(order => order.status === 'completed').length;
+
+            document.getElementById('totalOrders').textContent = totalOrders;
+            document.getElementById('totalRevenue').textContent = `$${totalRevenue.toFixed(2)}`;
+            document.getElementById('pendingOrders').textContent = pendingOrders;
+            document.getElementById('completedOrders').textContent = completedOrders;
+        }
+
+        function updateOrderStatus(orderId, newStatus) {
+            const orders = JSON.parse(localStorage.getItem('orders') || '[]');
+            const orderIndex = orders.findIndex(order => order.id === orderId);
+
+            if (orderIndex >= 0) {
+                orders[orderIndex].status = newStatus;
+                localStorage.setItem('orders', JSON.stringify(orders));
+                loadOrders();
+                showMessage('productSuccess', `Order ${orderId} status updated to ${newStatus}`);
+            }
+        }
+
+        function viewOrderDetails(orderId) {
+            const orders = JSON.parse(localStorage.getItem('orders') || '[]');
+            const order = orders.find(o => o.id === orderId);
+
+            if (order) {
+                let itemsHTML = '';
+                order.items.forEach(item => {
+                    const itemTotal = item.price * item.quantity;
+                    itemsHTML += `
+                        <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.1);">
+                            <span>${item.name} (x${item.quantity})</span>
+                            <span>$${itemTotal.toFixed(2)}</span>
+                        </div>
+                    `;
+                });
+
+                const details = `
+                    Order ID: ${order.id}\n
+                    Customer: ${order.customer.name}\n
+                    Email: ${order.customer.email}\n
+                    Phone: ${order.customer.phone || 'Not provided'}\n
+                    Payment: ${order.paymentMethod}\n
+                    Status: ${order.status}\n
+                    Date: ${new Date(order.date).toLocaleString()}\n\n
+                    Items:\n${order.items.map(item => `${item.name} (x${item.quantity}) - $${(item.price * item.quantity).toFixed(2)}`).join('\n')}\n\n
+                    Total: $${order.total.toFixed(2)}
+                `;
+
+                alert(details);
+            }
+        }
+
+        // Update statistics
+        function updateStats() {
+            document.getElementById('totalProducts').textContent = products.length;
+            document.getElementById('totalCategories').textContent = 4;
+            document.getElementById('totalTestimonials').textContent = testimonials.length;
+        }
+
+        // Menu navigation
+        document.querySelectorAll('.menu-item').forEach(item => {
+            item.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Remove active class from all items and sections
+                document.querySelectorAll('.menu-item').forEach(i => i.classList.remove('active'));
+                document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+                
+                // Add active class to clicked item and corresponding section
+                this.classList.add('active');
+                const sectionId = this.dataset.section;
+                document.getElementById(sectionId).classList.add('active');
+            });
+        });
+
+        // Product management
+        function renderProducts() {
+            const tbody = document.getElementById('productsTableBody');
+            tbody.innerHTML = '';
+
+            products.forEach((product, index) => {
+                const row = tbody.insertRow();
+                row.innerHTML = `
+                    <td>
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <img src="${product.image}" alt="${product.name}" style="width: 40px; height: 40px; object-fit: cover; border-radius: 6px;">
+                            <div>
+                                <div style="font-weight: 600; color: var(--text-light);">${product.name}</div>
+                                <div style="font-size: 12px; color: var(--text-muted);">${product.subtitle}</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td><span class="status-badge status-active">${product.category}</span></td>
+                    <td style="font-weight: 600; color: var(--accent);">${product.price}</td>
+                    <td><span class="status-badge status-active">Active</span></td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn-edit" onclick="editProduct(${index})">Edit</button>
+                            <button class="btn-delete" onclick="deleteProduct(${index})">Delete</button>
+                        </div>
+                    </td>
+                `;
+            });
+        }
+
+        function editProduct(index) {
+            const product = products[index];
+            document.getElementById('productName').value = product.name;
+            document.getElementById('productCategory').value = product.category;
+            document.getElementById('productSubtitle').value = product.subtitle;
+            document.getElementById('productPrice').value = product.price;
+            document.getElementById('productBadge').value = product.badge;
+            document.getElementById('productImage').value = product.image;
+            document.getElementById('productDescription').value = product.description || '';
+            document.getElementById('productFeatures').value = product.features ? product.features.join('\n') : '';
+            document.getElementById('productImages').value = product.images ? product.images.slice(1).join(',') : '';
+            document.getElementById('productVideo').value = product.videoLink || '';
+
+            // Scroll to form
+            document.querySelector('#products .admin-form').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function deleteProduct(index) {
+            if (confirm('Are you sure you want to delete this product? This action cannot be undone.')) {
+                const productName = products[index].name;
+                products.splice(index, 1);
+                saveData();
+                renderProducts();
+                updateStats();
+                logActivity('Product Deleted', `Products: ${productName}`);
+                showMessage('productSuccess', 'Product deleted successfully!');
+            }
+        }
+
+        function resetProductForm() {
+            document.getElementById('productForm').reset();
+        }
+
+        function previewProducts() {
+            window.open('products.html', '_blank');
+        }
+
+        document.getElementById('productForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const productData = {
+                name: document.getElementById('productName').value,
+                category: document.getElementById('productCategory').value,
+                subtitle: document.getElementById('productSubtitle').value,
+                price: document.getElementById('productPrice').value,
+                badge: document.getElementById('productBadge').value,
+                image: document.getElementById('productImage').value,
+                description: document.getElementById('productDescription').value,
+                features: document.getElementById('productFeatures').value.split('\n').filter(f => f.trim()),
+                images: [document.getElementById('productImage').value]
+            };
+
+            // Add additional images if provided
+            const additionalImages = document.getElementById('productImages').value;
+            if (additionalImages.trim()) {
+                productData.images = productData.images.concat(
+                    additionalImages.split(',').map(img => img.trim())
+                );
+            }
+
+            // Check if editing existing product
+            const existingIndex = products.findIndex(p => p.name === productData.name);
+            if (existingIndex >= 0) {
+                products[existingIndex] = productData;
+                logActivity('Product Updated', `Products: ${productData.name}`);
+                showMessage('productSuccess', 'Product updated successfully!');
+            } else {
+                products.push(productData);
+                logActivity('Product Added', `Products: ${productData.name}`);
+                showMessage('productSuccess', 'Product added successfully!');
+            }
+
+            saveData();
+            renderProducts();
+            updateStats();
+            resetProductForm();
+
+            // Trigger storage event to update products page if it's open
+            window.dispatchEvent(new StorageEvent('storage', {
+                key: 'adminProducts',
+                newValue: JSON.stringify(products)
+            }));
+        });
+
+        // Testimonial management
+        function renderTestimonials() {
+            const tbody = document.getElementById('testimonialsTableBody');
+            tbody.innerHTML = '';
+            
+            testimonials.forEach((testimonial, index) => {
+                const row = tbody.insertRow();
+                row.innerHTML = `
+                    <td>${testimonial.name}</td>
+                    <td>${testimonial.role}</td>
+                    <td>${'★'.repeat(testimonial.rating)}${'☆'.repeat(5-testimonial.rating)}</td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn-edit" onclick="editTestimonial(${index})">Edit</button>
+                            <button class="btn-delete" onclick="deleteTestimonial(${index})">Delete</button>
+                        </div>
+                    </td>
+                `;
+            });
+        }
+
+        function editTestimonial(index) {
+            const testimonial = testimonials[index];
+            document.getElementById('testimonialName').value = testimonial.name;
+            document.getElementById('testimonialRole').value = testimonial.role;
+            document.getElementById('testimonialQuote').value = testimonial.quote;
+            document.getElementById('testimonialRating').value = testimonial.rating;
+            
+            // Scroll to form
+            document.querySelector('#testimonials .admin-form').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function deleteTestimonial(index) {
+            if (confirm('Are you sure you want to delete this testimonial?')) {
+                const testimonialName = testimonials[index].name;
+                testimonials.splice(index, 1);
+                saveData();
+                renderTestimonials();
+                updateStats();
+                logActivity('Testimonial Deleted', `Testimonials: ${testimonialName}`);
+                showMessage('testimonialSuccess', 'Testimonial deleted successfully!');
+            }
+        }
+
+        function resetTestimonialForm() {
+            document.getElementById('testimonialForm').reset();
+        }
+
+        document.getElementById('testimonialForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const newTestimonial = {
+                name: document.getElementById('testimonialName').value,
+                role: document.getElementById('testimonialRole').value,
+                quote: document.getElementById('testimonialQuote').value,
+                rating: parseInt(document.getElementById('testimonialRating').value)
+            };
+            
+            // Check if editing existing testimonial (by name)
+            const existingIndex = testimonials.findIndex(t => t.name === newTestimonial.name);
+            if (existingIndex >= 0) {
+                testimonials[existingIndex] = newTestimonial;
+                logActivity('Testimonial Updated', `Testimonials: ${newTestimonial.name}`);
+            } else {
+                testimonials.push(newTestimonial);
+                logActivity('Testimonial Added', `Testimonials: ${newTestimonial.name}`);
+            }
+            
+            saveData();
+            renderTestimonials();
+            updateStats();
+            resetTestimonialForm();
+            showMessage('testimonialSuccess', 'Testimonial saved successfully!');
+        });
+
+        // Contact form
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const contactData = {
+                address: document.getElementById('contactAddress').value,
+                phoneMain: document.getElementById('contactPhoneMain').value,
+                phoneSupport: document.getElementById('contactPhoneSupport').value,
+                emailSupport: document.getElementById('contactEmailSupport').value,
+                emailDev: document.getElementById('contactEmailDev').value
+            };
+            
+            localStorage.setItem('adminContact', JSON.stringify(contactData));
+            
+            // Trigger storage event for real-time updates
+            window.dispatchEvent(new StorageEvent('storage', {
+                key: 'adminContact',
+                newValue: JSON.stringify(contactData)
+            }));
+            
+            logActivity('Contact Info Updated', 'Contact');
+            showMessage('contactSuccess', 'Contact information updated!');
+        });
+
+        // Hero form
+        document.getElementById('heroForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const heroData = {
+                badge: document.getElementById('heroBadge').value,
+                title1: document.getElementById('heroTitle1').value,
+                title2: document.getElementById('heroTitle2').value,
+                title3: document.getElementById('heroTitle3').value,
+                description: document.getElementById('heroDescription').value
+            };
+            
+            localStorage.setItem('adminHero', JSON.stringify(heroData));
+            
+            // Trigger storage event for real-time updates
+            window.dispatchEvent(new StorageEvent('storage', {
+                key: 'adminHero',
+                newValue: JSON.stringify(heroData)
+            }));
+            
+            logActivity('Hero Section Updated', 'Hero');
+            showMessage('heroSuccess', 'Hero section updated!');
+        });
+
+        // Settings form
+        document.getElementById('settingsForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const settingsData = {
+                currency: document.getElementById('currency').value,
+                currencyPosition: document.getElementById('currencyPosition').value,
+                storeName: document.getElementById('storeName').value,
+                storeEmail: document.getElementById('storeEmail').value
+            };
+            
+            localStorage.setItem('adminSettings', JSON.stringify(settingsData));
+            
+            // Trigger storage event for real-time updates
+            window.dispatchEvent(new StorageEvent('storage', {
+                key: 'adminSettings',
+                newValue: JSON.stringify(settingsData)
+            }));
+            
+            logActivity('Settings Updated', 'Settings');
+            showMessage('settingsSuccess', 'Settings saved successfully!');
+        });
+
+        // Category form
+        document.getElementById('categoryForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const categories = {};
+            document.querySelectorAll('#categoryForm input[data-category-id]').forEach(input => {
+                categories[input.dataset.categoryId] = input.value;
+            });
+            
+            localStorage.setItem('adminCategories', JSON.stringify(categories));
+            
+            // Trigger storage event for real-time updates
+            window.dispatchEvent(new StorageEvent('storage', {
+                key: 'adminCategories',
+                newValue: JSON.stringify(categories)
+            }));
+            
+            logActivity('Categories Updated', 'Categories');
+            showMessage('categorySuccess', 'Categories updated!');
+        });
+
+        // Utility functions
+        function showMessage(elementId, message) {
+            const element = document.getElementById(elementId);
+            element.textContent = message;
+            element.style.display = 'block';
+            
+            setTimeout(() => {
+                element.style.display = 'none';
+            }, 3000);
+        }
+
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                sessionStorage.removeItem('userLoggedIn');
+                sessionStorage.removeItem('userUsername');
+                sessionStorage.removeItem('userFullName');
+                sessionStorage.removeItem('userEmail');
+                sessionStorage.removeItem('userId');
+                sessionStorage.removeItem('isAdmin');
+                window.location.href = 'login.html';
+            }
+        }
+
+        // Load saved data on page load
+        loadData();
+
+        // Load saved contact data
+        const savedContact = localStorage.getItem('adminContact');
+        if (savedContact) {
+            const contactData = JSON.parse(savedContact);
+            document.getElementById('contactAddress').value = contactData.address;
+            document.getElementById('contactPhoneMain').value = contactData.phoneMain;
+            document.getElementById('contactPhoneSupport').value = contactData.phoneSupport;
+            document.getElementById('contactEmailSupport').value = contactData.emailSupport;
+            document.getElementById('contactEmailDev').value = contactData.emailDev;
+        }
+
+        // Load saved settings data
+        const savedSettings = localStorage.getItem('adminSettings');
+        if (savedSettings) {
+            const settingsData = JSON.parse(savedSettings);
+            document.getElementById('currency').value = settingsData.currency || 'USD';
+            document.getElementById('currencyPosition').value = settingsData.currencyPosition || 'before';
+            document.getElementById('storeName').value = settingsData.storeName || 'ChillZone';
+            document.getElementById('storeEmail').value = settingsData.storeEmail || 'store@chillzone.games';
+        }
+
+        function resetSettingsForm() {
+            document.getElementById('settingsForm').reset();
+            // Reset to default values
+            document.getElementById('currency').value = 'USD';
+            document.getElementById('currencyPosition').value = 'before';
+            document.getElementById('storeName').value = 'ChillZone';
+            document.getElementById('storeEmail').value = 'store@chillzone.games';
+        }
+
+        // Load saved hero data
+        const savedHero = localStorage.getItem('adminHero');
+        if (savedHero) {
+            const heroData = JSON.parse(savedHero);
+            document.getElementById('heroBadge').value = heroData.badge;
+            document.getElementById('heroTitle1').value = heroData.title1;
+            document.getElementById('heroTitle2').value = heroData.title2;
+            document.getElementById('heroTitle3').value = heroData.title3;
+            document.getElementById('heroDescription').value = heroData.description;
+        }
+
+        // Load saved categories
+        const savedCategories = localStorage.getItem('adminCategories');
+        if (savedCategories) {
+            const categories = JSON.parse(savedCategories);
+            document.querySelectorAll('#categoryForm input[data-category-id]').forEach(input => {
+                if (categories[input.dataset.categoryId]) {
+                    input.value = categories[input.dataset.categoryId];
+                }
+            });
+        }
+
+        // Page management functions
+        let currentPage = '';
+        let pageData = {};
+
+        function loadPageContent() {
+            const pageSelector = document.getElementById('pageSelector');
+            const selectedPage = pageSelector.value;
+            
+            if (!selectedPage) {
+                document.getElementById('pageEditor').style.display = 'none';
+                document.getElementById('pagePreview').style.display = 'none';
+                return;
+            }
+            
+            currentPage = selectedPage;
+            
+            // Load page data from localStorage or use defaults
+            const savedPages = JSON.parse(localStorage.getItem('adminPages') || '{}');
+            
+            if (savedPages[selectedPage]) {
+                pageData = savedPages[selectedPage];
+            } else {
+                // Default page data
+                pageData = {
+                    title: getPageDefaultTitle(selectedPage),
+                    metaDescription: getPageDefaultMeta(selectedPage),
+                    content: getPageDefaultContent(selectedPage)
+                };
+            }
+            
+            // Populate form fields
+            document.getElementById('pageTitle').value = pageData.title || '';
+            document.getElementById('pageMetaDescription').value = pageData.metaDescription || '';
+            document.getElementById('pageContent').value = pageData.content || '';
+            
+            // Show editor
+            document.getElementById('pageEditor').style.display = 'block';
+            document.getElementById('pagePreview').style.display = 'none';
+            
+            showMessage('pageSuccess', `Loaded ${selectedPage} for editing`);
+        }
+
+        function getPageDefaultTitle(page) {
+            const titles = {
+                'index.html': 'ChillZone - Premium Gaming Collection',
+                'products.html': 'Products - ChillZone Gaming',
+                'about.html': 'About - ChillZone',
+                'contact.html': 'Contact - ChillZone'
+            };
+            return titles[page] || 'ChillZone';
+        }
+
+        function getPageDefaultMeta(page) {
+            const metas = {
+                'index.html': 'Discover premium games and FiveM scripts at ChillZone. High-quality gaming content with instant delivery.',
+                'products.html': 'Browse our collection of premium games and FiveM scripts. Direct purchase with instant delivery.',
+                'about.html': 'Learn more about ChillZone and our mission to provide premium gaming content.',
+                'contact.html': 'Get in touch with ChillZone team for support and inquiries.'
+            };
+            return metas[page] || 'ChillZone - Premium Gaming Content';
+        }
+
+        function getPageDefaultContent(page) {
+            const contents = {
+                'index.html': '<h1>Welcome to ChillZone</h1>\n<p>Your premium gaming destination</p>',
+                'products.html': '<h1>Our Products</h1>\n<p>Browse our collection</p>',
+                'about.html': '<h1>About ChillZone</h1>\n<p>Learn more about us</p>',
+                'contact.html': '<h1>Contact Us</h1>\n<p>Get in touch</p>'
+            };
+            return contents[page] || '<p>Page content goes here</p>';
+        }
+
+        function savePage() {
+            if (!currentPage) {
+                alert('Please select a page first');
+                return;
+            }
+            
+            // Get form data
+            const updatedPageData = {
+                title: document.getElementById('pageTitle').value,
+                metaDescription: document.getElementById('pageMetaDescription').value,
+                content: document.getElementById('pageContent').value,
+                lastModified: new Date().toISOString()
+            };
+            
+            // Save to localStorage
+            const savedPages = JSON.parse(localStorage.getItem('adminPages') || '{}');
+            savedPages[currentPage] = updatedPageData;
+            localStorage.setItem('adminPages', JSON.stringify(savedPages));
+            
+            // Trigger storage event for real-time updates
+            window.dispatchEvent(new StorageEvent('storage', {
+                key: 'adminPages',
+                newValue: JSON.stringify(savedPages)
+            }));
+            
+            showMessage('pageSuccess', `Page ${currentPage} saved successfully!`);
+        }
+
+        function previewPage() {
+            if (!currentPage) {
+                alert('Please select a page first');
+                return;
+            }
+            
+            const content = document.getElementById('pageContent').value;
+            const previewContent = document.getElementById('previewContent');
+            
+            // Show preview
+            previewContent.innerHTML = content;
+            document.getElementById('pageEditor').style.display = 'none';
+            document.getElementById('pagePreview').style.display = 'block';
+            
+            showMessage('pageSuccess', 'Preview updated');
+        }
+
+        function openLivePreview() {
+            if (!currentPage) {
+                alert('Please select a page first');
+                return;
+            }
+            
+            // Open page in new tab
+            window.open(currentPage, '_blank');
+        }
+
+        function closePreview() {
+            document.getElementById('pagePreview').style.display = 'none';
+            document.getElementById('pageEditor').style.display = 'block';
+        }
+
+        function resetPageForm() {
+            document.getElementById('pageTitle').value = '';
+            document.getElementById('pageMetaDescription').value = '';
+            document.getElementById('pageContent').value = '';
+            document.getElementById('pageSelector').value = '';
+            document.getElementById('pageEditor').style.display = 'none';
+            document.getElementById('pagePreview').style.display = 'none';
+            currentPage = '';
+        }
+
+        // Initialize page management
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load saved pages on startup
+            const savedPages = JSON.parse(localStorage.getItem('adminPages') || '{}');
+            console.log('Loaded saved pages:', Object.keys(savedPages));
+        });
+    </script>
+</body>
+</html>

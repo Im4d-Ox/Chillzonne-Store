@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile - ChillZone</title>
+    <link rel="stylesheet" href="templatemo-chillzone-fashion.css">
+    <style>
+        .profile-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+            padding: 20px;
+        }
+        
+        .profile-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 40px;
+            width: 100%;
+            max-width: 500px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .profile-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .profile-header h2 {
+            color: var(--text-light);
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        
+        .profile-header p {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            color: var(--text-light);
+            margin-bottom: 8px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            color: white;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--accent);
+            background: rgba(255, 255, 255, 0.08);
+        }
+        
+        .form-group input::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+        
+        .form-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .btn-primary {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            flex: 1;
+        }
+        
+        .btn-primary:hover {
+            background: var(--accent-hover);
+            transform: translateY(-1px);
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-light);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            flex: 1;
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+        
+        .success-message {
+            background: rgba(76, 175, 80, 0.1);
+            border: 1px solid #4CAF50;
+            color: #4CAF50;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            display: none;
+        }
+        
+        .error-message {
+            background: rgba(255, 51, 102, 0.1);
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            display: none;
+        }
+        
+        .back-nav {
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        .back-nav a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 13px;
+            transition: color 0.3s ease;
+        }
+        
+        .back-nav a:hover {
+            color: var(--accent);
+        }
+        
+        .video-section {
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .video-section h3 {
+            color: var(--text-light);
+            font-size: 18px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .video-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .circular-video {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 3px solid var(--accent);
+            background: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            box-shadow: 0 0 20px rgba(255, 51, 102, 0.3);
+        }
+        
+        .circular-video video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .circular-video.empty {
+            color: var(--text-muted);
+            font-size: 12px;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .video-upload-group {
+            width: 100%;
+        }
+        
+        .video-upload-group label {
+            display: block;
+            color: var(--text-light);
+            margin-bottom: 8px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .video-upload-group input[type="file"] {
+            width: 100%;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px dashed rgba(255, 255, 255, 0.2);
+            border-radius: 6px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .video-upload-group input[type="file"]:hover {
+            border-color: var(--accent);
+            background: rgba(255, 255, 255, 0.08);
+        }
+        
+        .video-info {
+            width: 100%;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            color: var(--text-muted);
+            font-size: 12px;
+            text-align: center;
+        }
+        
+        .video-duration {
+            color: var(--text-light);
+            font-size: 13px;
+            margin-top: 8px;
+        }
+        
+        .video-actions {
+            display: flex;
+            gap: 10px;
+            width: 100%;
+            margin-top: 10px;
+        }
+        
+        .btn-delete-video {
+            background: rgba(255, 51, 102, 0.2);
+            color: var(--accent);
+            border: 1px solid var(--accent);
+            padding: 10px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            flex: 1;
+        }
+        
+        .btn-delete-video:hover {
+            background: var(--accent);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="profile-container">
+        <div class="profile-card">
+            <div class="profile-header">
+                <h2>My Profile</h2>
+                <p>Manage your account information</p>
+            </div>
+            
+            <div class="success-message" id="successMessage"></div>
+            <div class="error-message" id="errorMessage"></div>
+            
+            <form id="profileForm">
+                <div class="form-group">
+                    <label for="fullName">Full Name</label>
+                    <input type="text" id="fullName" name="fullName" placeholder="Enter your full name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" placeholder="Choose a username" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary">Save Changes</button>
+                    <button type="button" class="btn-secondary" onclick="window.location.href='index.html'">Cancel</button>
+                </div>
+            </form>
+            
+            <div class="back-nav">
+                <a href="index.html">← Back to Website</a>
+            </div>
+            
+            <div class="video-section">
+                <h3>My Video Profile</h3>
+                <div class="video-container">
+                    <div class="circular-video empty" id="videoDisplay">
+                        <span>No video yet</span>
+                    </div>
+                    
+                    <div class="video-upload-group">
+                        <label for="videoUpload">Upload Your Video (max 5 minutes)</label>
+                        <input type="file" id="videoUpload" accept="video/*" />
+                        <div class="video-info" id="videoInfo">
+                            Supported formats: MP4, WebM, Ogg
+                        </div>
+                        <div class="video-duration" id="videoDuration" style="display: none;"></div>
+                    </div>
+                    
+                    <div class="video-actions" id="videoActions" style="display: none;">
+                        <button type="button" class="btn-delete-video" onclick="profileManager.deleteVideo()">Delete Video</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Profile Management
+        class ProfileManager {
+            constructor() {
+                this.maxVideoDuration = 300; // 5 minutes in seconds
+                this.initializeForm();
+                this.loadProfileData();
+                this.initializeVideoUpload();
+                this.loadSavedVideo();
+            }
+            
+            initializeForm() {
+                const form = document.getElementById('profileForm');
+                form.addEventListener('submit', (e) => this.handleProfileUpdate(e));
+            }
+            
+            initializeVideoUpload() {
+                const videoUpload = document.getElementById('videoUpload');
+                videoUpload.addEventListener('change', (e) => this.handleVideoUpload(e));
+            }
+            
+            loadProfileData() {
+                // Check if user is logged in
+                const isLoggedIn = sessionStorage.getItem('userLoggedIn') === 'true';
+                if (!isLoggedIn) {
+                    window.location.href = 'login.html';
+                    return;
+                }
+                
+                // Load current user data
+                const fullName = sessionStorage.getItem('userFullName');
+                const username = sessionStorage.getItem('userUsername');
+                const email = sessionStorage.getItem('userEmail');
+                
+                document.getElementById('fullName').value = fullName || '';
+                document.getElementById('username').value = username || '';
+                document.getElementById('email').value = email || '';
+            }
+            
+            handleProfileUpdate(e) {
+                e.preventDefault();
+                
+                const formData = {
+                    fullName: document.getElementById('fullName').value.trim(),
+                    username: document.getElementById('username').value.trim(),
+                    email: document.getElementById('email').value.trim().toLowerCase()
+                };
+                
+                // Validate form
+                const validation = this.validateForm(formData);
+                if (!validation.valid) {
+                    this.showMessage('error', validation.message);
+                    return;
+                }
+                
+                // Update user data
+                this.updateUserData(formData);
+                this.showMessage('success', 'Profile updated successfully!');
+            }
+            
+            validateForm(data) {
+                if (!data.fullName || !data.username || !data.email) {
+                    return { valid: false, message: 'Please fill in all fields' };
+                }
+                
+                // Validate email format
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(data.email)) {
+                    return { valid: false, message: 'Please enter a valid email address' };
+                }
+                
+                // Validate username
+                const usernameRegex = /^[a-zA-Z0-9_-]+$/;
+                if (!usernameRegex.test(data.username)) {
+                    return { valid: false, message: 'Username can only contain letters, numbers, underscores, and hyphens' };
+                }
+                
+                if (data.username.length < 3) {
+                    return { valid: false, message: 'Username must be at least 3 characters long' };
+                }
+                
+                return { valid: true };
+            }
+            
+            updateUserData(formData) {
+                const users = JSON.parse(localStorage.getItem('chillzoneUsers')) || [];
+                const currentUserId = sessionStorage.getItem('userId');
+                
+                // Find and update user
+                const userIndex = users.findIndex(user => user.id == currentUserId);
+                if (userIndex >= 0) {
+                    users[userIndex].fullName = formData.fullName;
+                    users[userIndex].username = formData.username;
+                    users[userIndex].email = formData.email;
+                    
+                    // Save updated users
+                    localStorage.setItem('chillzoneUsers', JSON.stringify(users));
+                    
+                    // Update session storage
+                    sessionStorage.setItem('userFullName', formData.fullName);
+                    sessionStorage.setItem('userUsername', formData.username);
+                    sessionStorage.setItem('userEmail', formData.email);
+                }
+            }
+            
+            handleVideoUpload(e) {
+                const file = e.target.files[0];
+                if (!file) return;
+                
+                // Validate file type
+                if (!file.type.startsWith('video/')) {
+                    this.showMessage('error', 'Please select a valid video file');
+                    return;
+                }
+                
+                // Create video element to check duration
+                const video = document.createElement('video');
+                const fileURL = URL.createObjectURL(file);
+                video.src = fileURL;
+                
+                video.addEventListener('loadedmetadata', () => {
+                    const duration = video.duration;
+                    
+                    // Validate duration
+                    if (duration > this.maxVideoDuration) {
+                        this.showMessage('error', `Video is too long. Maximum duration is 5 minutes. Your video is ${Math.round(duration / 60)} minutes.`);
+                        document.getElementById('videoUpload').value = '';
+                        URL.revokeObjectURL(fileURL);
+                        return;
+                    }
+                    
+                    // Read and save video
+                    const reader = new FileReader();
+                    reader.addEventListener('load', () => {
+                        this.saveVideo(reader.result, duration);
+                        this.showMessage('success', 'Video uploaded and saved successfully!');
+                    });
+                    reader.readAsDataURL(file);
+                    URL.revokeObjectURL(fileURL);
+                });
+                
+                video.addEventListener('error', () => {
+                    this.showMessage('error', 'Error loading video file');
+                    document.getElementById('videoUpload').value = '';
+                    URL.revokeObjectURL(fileURL);
+                });
+            }
+            
+            saveVideo(videoData, duration) {
+                const userId = sessionStorage.getItem('userId');
+                const videoObject = {
+                    userId: userId,
+                    data: videoData,
+                    duration: duration,
+                    timestamp: new Date().toISOString()
+                };
+                
+                localStorage.setItem('userVideo_' + userId, JSON.stringify(videoObject));
+                this.displayVideo(videoData, duration);
+            }
+            
+            loadSavedVideo() {
+                const userId = sessionStorage.getItem('userId');
+                const savedVideo = localStorage.getItem('userVideo_' + userId);
+                
+                if (savedVideo) {
+                    try {
+                        const videoObject = JSON.parse(savedVideo);
+                        this.displayVideo(videoObject.data, videoObject.duration);
+                    } catch (error) {
+                        console.error('Error loading saved video:', error);
+                    }
+                }
+            }
+            
+            displayVideo(videoData, duration) {
+                const videoDisplay = document.getElementById('videoDisplay');
+                const videoInfo = document.getElementById('videoInfo');
+                const videoDuration = document.getElementById('videoDuration');
+                const videoActions = document.getElementById('videoActions');
+                
+                // Clear the display
+                videoDisplay.innerHTML = '';
+                videoDisplay.classList.remove('empty');
+                
+                // Create video element
+                const video = document.createElement('video');
+                video.src = videoData;
+                video.autoplay = true;
+                video.loop = true;
+                video.muted = true;
+                video.playsinline = true;
+                
+                videoDisplay.appendChild(video);
+                videoDisplay.style.backgroundColor = '#000';
+                
+                // Update info
+                const minutes = Math.floor(duration / 60);
+                const seconds = Math.floor(duration % 60);
+                videoDuration.textContent = `Duration: ${minutes}:${seconds.toString().padStart(2, '0')}`;
+                videoDuration.style.display = 'block';
+                videoInfo.textContent = '✓ Video saved and will persist after page refresh';
+                videoActions.style.display = 'flex';
+            }
+            
+            deleteVideo() {
+                const userId = sessionStorage.getItem('userId');
+                localStorage.removeItem('userVideo_' + userId);
+                
+                // Reset display
+                const videoDisplay = document.getElementById('videoDisplay');
+                const videoInfo = document.getElementById('videoInfo');
+                const videoDuration = document.getElementById('videoDuration');
+                const videoActions = document.getElementById('videoActions');
+                const videoUpload = document.getElementById('videoUpload');
+                
+                videoDisplay.innerHTML = '<span>No video yet</span>';
+                videoDisplay.classList.add('empty');
+                videoInfo.textContent = 'Supported formats: MP4, WebM, Ogg';
+                videoDuration.style.display = 'none';
+                videoActions.style.display = 'none';
+                videoUpload.value = '';
+                
+                this.showMessage('success', 'Video deleted successfully!');
+            }
+            
+            showMessage(type, message) {
+                const successElement = document.getElementById('successMessage');
+                const errorElement = document.getElementById('errorMessage');
+                
+                if (type === 'success') {
+                    successElement.textContent = message;
+                    successElement.style.display = 'block';
+                    errorElement.style.display = 'none';
+                } else {
+                    errorElement.textContent = message;
+                    errorElement.style.display = 'block';
+                    successElement.style.display = 'none';
+                }
+                
+                // Auto-hide after 5 seconds
+                setTimeout(() => {
+                    successElement.style.display = 'none';
+                    errorElement.style.display = 'none';
+                }, 5000);
+            }
+        }
+        
+        // Initialize when DOM is ready
+        let profileManager;
+        document.addEventListener('DOMContentLoaded', () => {
+            profileManager = new ProfileManager();
+        });
+    </script>
+</body>
+</html>

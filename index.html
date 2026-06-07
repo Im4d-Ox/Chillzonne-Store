@@ -1,0 +1,2294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChillZone - Games & FiveM Scripts</title>
+    <link rel="stylesheet" href="templatemo-chillzone-fashion.css">
+    <style>
+        /* Authentication Buttons Styling */
+        .auth-buttons {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-left: 20px;
+        }
+
+        .auth-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 18px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            border: 2px solid transparent;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .auth-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .auth-btn:hover::before {
+            left: 100%;
+        }
+
+        .auth-btn-primary {
+            background: linear-gradient(135deg, #ff3366 0%, #ff1a4d 100%);
+            color: white;
+            border-color: rgba(255, 51, 102, 0.3);
+        }
+
+        .auth-btn-primary:hover {
+            background: linear-gradient(135deg, #ff1a4d 0%, #ff3366 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 51, 102, 0.4);
+            border-color: rgba(255, 51, 102, 0.6);
+        }
+
+        .auth-btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .auth-btn-secondary:hover {
+            background: rgba(255, 51, 102, 0.2);
+            border-color: #ff3366;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 51, 102, 0.3);
+        }
+
+        .auth-btn-icon {
+            font-size: 14px;
+            transition: transform 0.3s ease;
+        }
+
+        .auth-btn:hover .auth-btn-icon {
+            transform: scale(1.1);
+        }
+
+        .auth-btn-text {
+            font-weight: 700;
+            transition: all 0.3s ease;
+        }
+
+        /* Mobile responsive auth buttons */
+        @media (max-width: 768px) {
+            .auth-buttons {
+                margin-left: 10px;
+                gap: 8px;
+            }
+
+            .auth-btn {
+                padding: 8px 14px;
+                font-size: 12px;
+            }
+
+            .auth-btn-text {
+                display: none;
+            }
+
+            .auth-btn-icon {
+                font-size: 16px;
+            }
+        }
+
+        /* Mobile Auth Buttons */
+        .mobile-auth-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            padding: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 20px;
+        }
+
+        .mobile-auth-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 14px 20px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        .mobile-auth-btn.primary {
+            background: linear-gradient(135deg, #ff3366 0%, #ff1a4d 100%);
+            border-color: rgba(255, 51, 102, 0.3);
+        }
+
+        .mobile-auth-btn.admin {
+            background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%);
+            border-color: rgba(108, 92, 231, 0.3);
+        }
+
+        .mobile-auth-btn.logout {
+            background: rgba(255, 87, 87, 0.1);
+            border-color: rgba(255, 87, 87, 0.3);
+            color: #ff5757;
+        }
+
+        .mobile-auth-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .mobile-user-profile {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            padding: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 20px;
+        }
+
+        .mobile-user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .mobile-user-avatar {
+            font-size: 24px;
+        }
+
+        .mobile-user-name {
+            font-weight: 600;
+            font-size: 14px;
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .auth-buttons {
+                margin-left: 10px;
+                gap: 8px;
+            }
+
+            .auth-btn {
+                padding: 8px 14px;
+                font-size: 12px;
+            }
+
+            .auth-btn-text {
+                display: none;
+            }
+
+            .auth-btn-icon {
+                font-size: 16px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .auth-buttons {
+                margin-left: 5px;
+            }
+
+            .auth-btn {
+                padding: 6px 12px;
+            }
+        }
+
+        /* User Modal Styling */
+        .user-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10000;
+        }
+
+        .user-modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .user-modal .modal-backdrop {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(8px);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .user-modal .modal-container {
+            position: relative;
+            background: linear-gradient(135deg, rgba(26, 26, 26, 0.95) 0%, rgba(10, 10, 10, 0.95) 100%);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            max-width: 600px;
+            width: 90%;
+            max-height: 90vh;
+            overflow: hidden;
+            animation: modalSlideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .user-modal .modal-container.small-modal {
+            max-width: 400px;
+        }
+
+        .user-modal .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 25px 30px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .user-modal .modal-header h2 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 700;
+            color: white;
+        }
+
+        .user-modal .modal-close {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 24px;
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .user-modal .modal-close:hover {
+            background: rgba(255, 51, 102, 0.1);
+            color: var(--accent);
+            transform: scale(1.1);
+        }
+
+        .user-modal .modal-content {
+            padding: 30px;
+            max-height: calc(90vh - 80px);
+            overflow-y: auto;
+        }
+
+        /* Profile Modal Styles */
+        .profile-avatar-section {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        .avatar-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid var(--accent);
+            box-shadow: 0 8px 25px rgba(255, 51, 102, 0.3);
+        }
+
+        .change-avatar-btn {
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            cursor: pointer;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .change-avatar-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 15px rgba(255, 51, 102, 0.4);
+        }
+
+        .profile-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            color: var(--text-light);
+            font-size: 14px;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .setting-select {
+            padding: 12px 16px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .setting-select:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(255, 51, 102, 0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        /* Orders Modal Styles */
+        .orders-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .summary-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .summary-card h3 {
+            margin: 0 0 10px 0;
+            font-size: 12px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .summary-number {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--accent);
+            display: block;
+        }
+
+        .no-orders {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .no-orders p {
+            color: var(--text-muted);
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+
+        .browse-btn {
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-hover) 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .browse-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 51, 102, 0.4);
+        }
+
+        /* Settings Modal Styles */
+        .settings-section {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .settings-section:last-child {
+            border-bottom: none;
+            margin-bottom: 20px;
+        }
+
+        .settings-section h3 {
+            margin: 0 0 15px 0;
+            color: white;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .setting-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .setting-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            font-size: 14px;
+            color: var(--text-light);
+            flex: 1;
+        }
+
+        .setting-label input[type="checkbox"] {
+            display: none;
+        }
+
+        .checkmark {
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 4px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .setting-label input:checked + .checkmark {
+            background: var(--accent);
+            border-color: var(--accent);
+        }
+
+        .setting-label input:checked + .checkmark::after {
+            content: '✓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-weight: bold;
+        }
+
+        .setting-select {
+            padding: 8px 12px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+            min-width: 120px;
+        }
+
+        .setting-select:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .danger-btn {
+            background: linear-gradient(135deg, #ff4757 0%, #ff3838 100%);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .danger-btn:hover {
+            background: linear-gradient(135deg, #ff3838 0%, #ff2828 100%);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 15px rgba(255, 71, 87, 0.4);
+        }
+
+        .danger-text {
+            margin: 10px 0 0 0;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        /* Delete Account Modal Styles */
+        .delete-confirmation {
+            text-align: center;
+        }
+
+        .delete-confirmation p {
+            margin-bottom: 15px;
+            color: var(--text-light);
+            line-height: 1.5;
+        }
+
+        .delete-confirmation p:first-child {
+            font-weight: 600;
+            color: #ff6b6b;
+        }
+
+        /* Form Actions */
+        .form-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: flex-end;
+            margin-top: 30px;
+        }
+
+        .save-btn,
+        .cancel-btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+
+        .save-btn {
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-hover) 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(255, 51, 102, 0.3);
+        }
+
+        .save-btn:hover {
+            background: linear-gradient(135deg, var(--accent-hover) 0%, var(--accent) 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 51, 102, 0.4);
+        }
+
+        .cancel-btn {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-light);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .cancel-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+
+        /* Mobile Responsive for User Modals */
+        @media (max-width: 768px) {
+            .user-modal .modal-container {
+                width: 95%;
+                margin: 20px;
+            }
+
+            .user-modal .modal-content {
+                padding: 20px;
+            }
+
+            .user-modal .modal-header {
+                padding: 20px;
+            }
+
+            .user-modal .modal-header h2 {
+                font-size: 20px;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .orders-summary {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .summary-card {
+                padding: 15px;
+            }
+
+            .summary-number {
+                font-size: 24px;
+            }
+
+            .form-actions {
+                flex-direction: column;
+            }
+
+            .profile-avatar {
+                width: 100px;
+                height: 100px;
+            }
+        }
+
+        /* User Profile Button Styling */
+        .user-profile-btn {
+            position: relative;
+            margin-left: 20px;
+        }
+
+        .user-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 25px;
+            color: white;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .user-btn:hover {
+            background: rgba(255, 51, 102, 0.2);
+            border-color: var(--accent);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(255, 51, 102, 0.3);
+        }
+
+        .user-avatar {
+            font-size: 18px;
+        }
+
+        .user-name {
+            max-width: 80px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .user-dropdown-icon {
+            font-size: 10px;
+            transition: transform 0.3s ease;
+        }
+
+        .user-profile-btn.active .user-dropdown-icon {
+            transform: rotate(180deg);
+        }
+
+        /* User Dropdown Menu */
+        .user-menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            margin-top: 10px;
+            width: 250px;
+            background: linear-gradient(135deg, rgba(26, 26, 26, 0.95) 0%, rgba(10, 10, 10, 0.95) 100%);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(20px);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1000;
+        }
+
+        .user-profile-btn.active .user-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .user-menu-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .user-avatar-large {
+            font-size: 32px;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-hover) 100%);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .user-info {
+            flex: 1;
+        }
+
+        .user-full-name {
+            color: white;
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 2px;
+        }
+
+        .user-role {
+            color: var(--accent);
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .user-menu-divider {
+            height: 1px;
+            background: rgba(255, 255, 255, 0.1);
+            margin: 8px 0;
+        }
+
+        .user-menu-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 20px;
+            color: var(--text-light);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: none;
+            background: none;
+            cursor: pointer;
+            width: 100%;
+            text-align: left;
+        }
+
+        .user-menu-item:hover {
+            background: rgba(255, 51, 102, 0.1);
+            color: var(--accent);
+        }
+
+        .user-menu-item.logout-btn:hover {
+            background: rgba(255, 71, 87, 0.1);
+            color: #ff4757;
+        }
+
+        .menu-icon {
+            font-size: 16px;
+            width: 20px;
+            text-align: center;
+        }
+
+        /* Mobile User Menu */
+        @media (max-width: 768px) {
+            .user-profile-btn {
+                margin-left: 10px;
+            }
+
+            .user-btn {
+                padding: 6px 12px;
+                font-size: 12px;
+            }
+
+            .user-name {
+                display: none;
+            }
+
+            .user-menu {
+                width: 200px;
+                right: -10px;
+            }
+        }
+
+        /* ===== NEW PRODUCT BUTTONS SYSTEM ===== */
+
+        /* Product buttons container */
+        .product-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 20px;
+            width: 100%;
+        }
+
+        /* View Details Button */
+        .view-details-btn {
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .view-details-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
+        }
+
+        .view-details-btn:active {
+            transform: translateY(0);
+        }
+
+        /* Buy Now Button */
+        .buy-now-btn {
+            background: linear-gradient(135deg, #ff3366 0%, #ff1a4d 100%);
+            color: #ffffff;
+            border: none;
+            padding: 14px 20px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 4px 15px rgba(255, 51, 102, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .buy-now-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .buy-now-btn:hover::before {
+            left: 100%;
+        }
+
+        .buy-now-btn:hover {
+            background: linear-gradient(135deg, #ff1a4d 0%, #ff3366 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 51, 102, 0.6);
+        }
+
+        .buy-now-btn:active {
+            transform: translateY(0);
+            box-shadow: 0 4px 15px rgba(255, 51, 102, 0.4);
+        }
+
+        /* Mobile responsive buttons */
+        @media (max-width: 768px) {
+            .product-buttons {
+                gap: 10px;
+                margin-top: 16px;
+            }
+
+            .view-details-btn,
+            .buy-now-btn {
+                padding: 10px 16px;
+                font-size: 13px;
+            }
+
+            .buy-now-btn {
+                font-size: 15px;
+            }
+        }
+
+        /* Product Modal Styling */
+        .product-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10000;
+        }
+
+        .product-modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-backdrop {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(8px);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-container {
+            position: relative;
+            background: linear-gradient(135deg, rgba(26, 26, 26, 0.95) 0%, rgba(10, 10, 10, 0.95) 100%);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            max-width: 900px;
+            width: 90%;
+            max-height: 90vh;
+            overflow: hidden;
+            animation: modalSlideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 25px 30px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .modal-header h2 {
+            margin: 0;
+            font-size: 28px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #fff, var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 28px;
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .modal-close:hover {
+            background: rgba(255, 51, 102, 0.1);
+            color: var(--accent);
+            transform: scale(1.1);
+        }
+
+        .modal-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            padding: 30px;
+            max-height: calc(90vh - 80px);
+            overflow-y: auto;
+        }
+
+        .modal-image-section {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .main-image-container {
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .main-image-container img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .main-image-container:hover img {
+            transform: scale(1.05);
+        }
+
+        .modal-badge {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            padding: 6px 12px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+            color: white;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .image-gallery {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            padding-bottom: 5px;
+        }
+
+        .gallery-thumb {
+            flex-shrink: 0;
+            width: 80px;
+            height: 80px;
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .gallery-thumb:hover {
+            border-color: var(--accent);
+            transform: scale(1.05);
+        }
+
+        .gallery-thumb.active {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 2px rgba(255, 51, 102, 0.3);
+        }
+
+        .gallery-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .modal-info {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .modal-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-category {
+            padding: 4px 12px;
+            background: rgba(255, 51, 102, 0.1);
+            color: var(--accent);
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .modal-price {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--accent);
+            text-shadow: 0 2px 8px rgba(255, 51, 102, 0.3);
+        }
+
+        .modal-description {
+            line-height: 1.6;
+            color: var(--text-light);
+            font-size: 15px;
+        }
+
+        .modal-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .feature-tag {
+            padding: 6px 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            font-size: 12px;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .feature-tag::before {
+            content: "✓";
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .modal-buy-btn,
+        .modal-close-btn {
+            flex: 1;
+            padding: 14px 20px;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .modal-buy-btn {
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-hover) 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(255, 51, 102, 0.3);
+        }
+
+        .modal-buy-btn:hover {
+            background: linear-gradient(135deg, var(--accent-hover) 0%, var(--accent) 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 51, 102, 0.5);
+        }
+
+        .modal-close-btn {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-light);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .modal-close-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+
+        /* Modal Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9) translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        /* Mobile Modal Styles */
+        @media (max-width: 768px) {
+            .modal-container {
+                width: 95%;
+                margin: 20px;
+            }
+
+            .modal-content {
+                grid-template-columns: 1fr;
+                gap: 20px;
+                padding: 20px;
+            }
+
+            .modal-header {
+                padding: 20px;
+            }
+
+            .modal-header h2 {
+                font-size: 24px;
+            }
+
+            .main-image-container img {
+                height: 250px;
+            }
+
+            .modal-actions {
+                flex-direction: column;
+            }
+
+            .image-gallery {
+                justify-content: center;
+            }
+        }
+
+        /* Videos Carousel Section */
+        .videos-carousel {
+            padding: 80px 20px;
+            background: linear-gradient(135deg, rgba(255, 51, 102, 0.05) 0%, rgba(10, 10, 10, 0.5) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .videos-carousel-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .videos-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .videos-header h2 {
+            font-size: 42px;
+            color: white;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .videos-header p {
+            font-size: 16px;
+            color: #cccccc;
+        }
+
+        .carousel-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+            position: relative;
+        }
+
+        .carousel-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 51, 102, 0.3);
+            border: 2px solid rgba(252, 214, 223, 0.6);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 10;
+            color: white;
+            font-size: 28px;
+            font-weight: bold;
+            backdrop-filter: blur(10px);
+        }
+
+        .carousel-nav:hover {
+            background: rgba(230, 197, 205, 0.6);
+            border-color: rgb(238, 191, 203);
+            transform: translateY(-50%) scale(1.15);
+            box-shadow: 0 0 30px rgba(255, 188, 205, 0.4);
+        }
+
+        .carousel-nav-left {
+            left: -80px;
+        }
+
+        .carousel-nav-right {
+            right: -80px;
+        }
+
+        .video-circles {
+            width: 100%;
+            max-width: 1200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            gap: 20px;
+        }
+
+        .video-preview {
+            width: 200px;
+            height: 112px;
+            border-radius: 12px;
+            overflow: hidden;
+            opacity: 0.25;
+            transform: scale(0.85) translateY(100px);
+            transition: all 0.4s ease;
+            position: relative;
+            background: rgba(0, 0, 0, 0.3);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(5px);
+        }
+
+        .video-preview:hover {
+            opacity: 0.5;
+            transform: scale(0.95) translateY(100px);
+            cursor: pointer;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        .video-preview iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            pointer-events: none;
+        }
+
+        .video-preview-left {
+            order: 1;
+        }
+
+        .video-circle {
+            order: 2;
+            flex: 1;
+            max-width: 800px;
+        }
+
+        .video-preview-right {
+            order: 3;
+        }
+
+        .video-circle {
+            width: 100%;
+            height: 100%;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(255, 51, 102, 0.3);
+            border: 3px solid rgba(255, 51, 102, 0.5);
+            transition: all 0.5s ease;
+            position: relative;
+        }
+
+        .video-circle.active {
+            box-shadow: 0 30px 80px rgba(255, 51, 102, 0.5);
+            border-color: rgba(255, 51, 102, 1);
+        }
+
+        .video-circle iframe {
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .video-circle.changing iframe {
+            opacity: 0;
+            transform: scale(0.95);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .video-circle iframe.fade-in {
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        .carousel-controls {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            width: 100%;
+        }
+
+        .carousel-controls-top {
+            margin-bottom: 20px;
+        }
+
+        .carousel-controls-bottom {
+            margin-top: 20px;
+        }
+
+        .video-info {
+            text-align: center;
+        }
+
+        .video-info h3 {
+            color: white;
+            font-size: 24px;
+            margin: 0;
+            margin-bottom: 8px;
+        }
+
+        .carousel-indicators {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .carousel-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid rgba(255, 51, 102, 0.5);
+        }
+
+        .carousel-indicator.active {
+            background: #ff3366;
+            transform: scale(1.3);
+            border-color: #ff3366;
+        }
+
+        @media (max-width: 768px) {
+            .videos-carousel {
+                padding: 60px 20px;
+            }
+
+            .videos-header h2 {
+                font-size: 32px;
+            }
+
+            .video-circles {
+                max-width: 400px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .videos-carousel {
+                padding: 40px 20px;
+            }
+
+            .videos-header h2 {
+                font-size: 24px;
+            }
+
+            .video-circles {
+                max-width: 300px;
+            }
+        }
+    </style>
+    <!-- 
+TemplateMo 599 Noir Fashion
+https://templatemo.com/tm-599-noir-fashion
+-->
+</head>
+<body>
+    <nav id="navbar">
+        <div class="nav-container">
+            <a href="#home" class="logo-link">
+                <svg class="logo-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#fff;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#ff3366;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    <polygon points="50,10 20,50 50,90 80,50" fill="none" stroke="url(#logoGrad)" stroke-width="3"/>
+                    <circle cx="50" cy="50" r="5" fill="url(#logoGrad)"/>
+                </svg>
+                <span class="logo-text">ChillZone</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="#home" class="nav-link active">Home</a></li>
+                <li><a href="products.html" class="nav-link">Products</a></li>
+                <li><a href="#featured" class="nav-link">Featured</a></li>
+                <li><a href="#contact" class="nav-link">Contact</a></li>
+            </ul>
+
+            <!-- Admin Button Only -->
+            <div class="auth-buttons" id="authButtons">
+                <a href="admin-login.html" class="auth-btn auth-btn-primary" style="background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%); border-color: rgba(108, 92, 231, 0.3);">
+                    <span class="auth-btn-text">Admin</span>
+                    <span class="auth-btn-icon">🛡️</span>
+                </a>
+            </div>
+        </div>
+        <div class="menu-toggle" id="menuToggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </nav>
+
+    <div class="mobile-nav" id="mobileNav">
+        <ul class="mobile-nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="products.html">Products</a></li>
+            <li><a href="#featured">Featured</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+        <div class="mobile-auth-buttons" id="mobileAuthButtons">
+            <a href="admin-login.html" class="mobile-auth-btn admin">Admin</a>
+        </div>
+    </div>
+
+    <section class="hero" id="home">
+        <div class="hero-bg"></div>
+        <div class="hero-container">
+            <div class="hero-left">
+                <div class="hero-badge">New Gaming Collection 2025</div>
+                <h1 class="hero-title">
+                    <!-- <span class="line"><span>Level Up</span></span> -->
+                    <span class="line"><span>Best <span class="accent">Gaming</span></span></span>
+                    <span class="line"><span>Experience</span></span>
+                </h1>
+                <p class="hero-description">
+                    Discover our premium collection of games and FiveM scripts where innovation meets gameplay. 
+                    Each script and game is crafted to enhance your server and elevate your gaming experience.
+                </p>
+                <div class="hero-stats">
+                    <div class="stat">
+                        <span class="stat-number">500+</span>
+                        <span class="stat-label">Premium Scripts</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">48H</span>
+                        <span class="stat-label">Instant Delivery</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">100%</span>
+                        <span class="stat-label">Optimized</span>
+                    </div>
+                </div>
+                <div class="cta-group">
+                    <a href="products.html" class="cta-button primary">Explore Games</a>
+                    <a href="products.html" class="cta-button outline">View Games</a>
+                </div>
+            </div>
+            <div class="hero-right">
+                <div class="hero-image-wrapper">
+                    <div class="hero-carousel">
+                        <div class="carousel-slide active">
+                            <div class="slide-content">
+                                <img src="images/gamesindex.png" alt="Fashion Model 1">
+                            </div>
+                        </div>
+                        <div class="carousel-slide">
+                            <div class="slide-content">
+                                <img src="images/MV5BZWU0YzA1MzItZjM5NC00ZTc1LTk0MjAtYzhiN2EyN2RmM2Y1XkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg" alt="Fashion Model 2">
+                            </div>
+                        </div>
+                        <div class="carousel-slide">
+                            <div class="slide-content">
+                                <img src="images/b2dea8ec89166d398051075fb91b6202.jpg" alt="Fashion Model 3">
+                            </div>
+                        </div>
+                        <div class="carousel-overlay"></div>
+                        <div class="carousel-indicators">
+                            <span class="indicator active" data-slide="0"></span>
+                            <span class="indicator" data-slide="1"></span>
+                            <span class="indicator" data-slide="2"></span>
+                        </div>
+                    </div>
+                    <div class="floating-tags">
+                        <div class="tag">Limited Edition</div>
+                        <div class="tag">Handcrafted</div>
+                        <div class="tag">Premium Quality</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <span></span>
+        </div>
+    </section>
+
+    <!-- Videos Carousel Section -->
+    <section class="videos-carousel" id="videos">
+        <div class="videos-carousel-container">
+            <div class="videos-header">
+                <h2>Featured Gameplay Videos</h2>
+                <p>Watch our latest gaming highlights and product showcases</p>
+            </div>
+            
+            <div class="video-carousel-wrapper">
+                <div class="video-carousel-nav-external">
+                    <button class="video-nav-btn video-nav-prev" onclick="prevVideoSlide()">
+                        <span>&lt;</span>
+                    </button>
+                    <div class="video-nav-title">Featured Gameplay Videos</div>
+                    <button class="video-nav-btn video-nav-next" onclick="nextVideoSlide()">
+                        <span>&gt;</span>
+                    </button>
+                </div>
+                
+                <div class="video-carousel">
+                    <div class="video-slide active">
+                        <div class="video-thumbnail">
+                            <iframe 
+                                id="video-0"
+                                src="https://streamable.com/e/xxnii7?autoplay=1&muted=0&loop=0" 
+                                frameborder="0" 
+                                allow="autoplay; fullscreen" 
+                                allowfullscreen>
+                            </iframe>
+                        </div>
+                        <div class="video-info">
+                            <h3>Red Dead Redemption 2</h3>
+                            <p>Incredible gameplay highlights and clutch plays</p>
+                        </div>
+                        <div class="video-controls">
+                            <button class="control-btn" onclick="toggleMute(0)" id="mute-btn-0">🔊</button>
+                            <button class="control-btn" onclick="restartVideo(0)">⏮</button>
+                            <button class="control-btn" onclick="toggleFullscreen(0)">⛶</button>
+                        </div>
+                    </div>
+                    
+                    <div class="video-slide">
+                        <div class="video-thumbnail">
+                            <iframe 
+                                id="video-1"
+                                src="https://streamable.com/e/8v84br?autoplay=0&muted=1&loop=0" 
+                                frameborder="0" 
+                                allow="autoplay; fullscreen" 
+                                allowfullscreen>
+                            </iframe>
+                        </div>
+                        <div class="video-info">
+                            <h3>Arc Raiders</h3>
+                            <p>Showcasing premium scripts and custom gameplay mechanics</p>
+                        </div>
+                        <div class="video-controls">
+                            <button class="control-btn" onclick="toggleMute(1)" id="mute-btn-1">🔊</button>
+                            <button class="control-btn" onclick="restartVideo(1)">⏮</button>
+                            <button class="control-btn" onclick="toggleFullscreen(1)">⛶</button>
+                        </div>
+                    </div>
+                    
+                    <div class="video-slide">
+                        <div class="video-thumbnail">
+                            <iframe 
+                                id="video-2"
+                                src="https://streamable.com/e/kaxa53?autoplay=0&muted=1&loop=0" 
+                                frameborder="0" 
+                                allow="autoplay; fullscreen" 
+                                allowfullscreen>
+                            </iframe>
+                        </div>
+                        <div class="video-info">
+                            <h3>Grand Theft Auto VI</h3>
+                            <p>Intense combat sequences and strategic gameplay</p>
+                        </div>
+                        <div class="video-controls">
+                            <button class="control-btn" onclick="toggleMute(2)" id="mute-btn-2">🔊</button>
+                            <button class="control-btn" onclick="restartVideo(2)">⏮</button>
+                            <button class="control-btn" onclick="toggleFullscreen(2)">⛶</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="video-carousel-indicators">
+                    <span class="video-indicator active" data-slide="0"></span>
+                    <span class="video-indicator" data-slide="1"></span>
+                    <span class="video-indicator" data-slide="2"></span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="featured" id="featured">
+        <div class="featured-container">
+            <div class="featured-hero">
+                <div class="featured-content">
+                    <span class="label">Developed with Passion</span>
+                    <h2>The Art of Gaming</h2>
+                    <p>Where code meets creativity. Our expert developers blend cutting-edge technology with innovative gameplay to create scripts and games that redefine the gaming experience. This platform is proudly developed by ChillZone, featuring premium gaming solutions.</p>
+                    
+                    <div class="feature-highlights">
+                        <div class="highlight-item">
+                            <div class="highlight-icon">🎮</div>
+                            <div class="highlight-title">Premium Quality</div>
+                            <div class="highlight-desc">Only the finest code and game mechanics make it into our collection</div>
+                        </div>
+                        <div class="highlight-item">
+                            <div class="highlight-icon">⚡</div>
+                            <div class="highlight-title">Optimized</div>
+                            <div class="highlight-desc">Lightning-fast performance with minimal resource usage</div>
+                        </div>
+                        <div class="highlight-item">
+                            <div class="highlight-icon">💻</div>
+                            <div class="highlight-title">Expert Coded</div>
+                            <div class="highlight-desc">Each script is carefully developed by skilled programmers</div>
+                        </div>
+                    </div>
+                    
+                    <a href="products.html" class="feature-cta">Discover Our Games</a>
+                </div>
+                
+                <div class="featured-image-section">
+                    <div class="featured-image-grid">
+                        <div class="featured-img">
+                            <img src="images/Screenshot_2025-10-11_082401.png" alt="Fashion Collection Showcase">
+                        </div>
+                        <div class="featured-img">
+                            <img src="images/image.png" alt="Luxury Fashion Details">
+                        </div>
+                        <div class="featured-img">
+                            <img src="images/Arc_Raiders_cover_art.jpg" alt="Artisan Craftsmanship">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- <div class="testimonials">
+                <div class="testimonials-header">
+                    <h3>What Our Customers Say</h3>
+                    <p class="section-subtitle">Real stories from gaming enthusiasts</p>
+                </div>
+                
+                <div class="testimonials-grid">
+                    <div class="testimonial-card">
+                        <div class="testimonial-rating">★★★★★</div>
+                        <div class="testimonial-quote">
+                            "ChillZone has completely transformed my FiveM server. The scripts are amazing and the performance is unmatched. Every feature feels like it was made by professional developers."
+                        </div>
+                        <div class="testimonial-author">
+                            <div class="author-avatar">S</div>
+                            <div class="author-info">
+                                <h4>Sarah Chen</h4>
+                                <p>Server Owner</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="testimonial-card">
+                        <div class="testimonial-rating">★★★★★</div>
+                        <div class="testimonial-quote">
+                            "The optimization combined with premium features is exactly what I was looking for. ChillZone proves you don't have to compromise on performance."
+                        </div>
+                        <div class="testimonial-author">
+                            <div class="author-avatar">M</div>
+                            <div class="author-info">
+                                <h4>Marcus Rodriguez</h4>
+                                <p>Game Developer</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="testimonial-card">
+                        <div class="testimonial-rating">★★★★★</div>
+                        <div class="testimonial-quote">
+                            "I've been using ChillZone scripts for two years now, and each update keeps exceeding my expectations. The code quality and support are consistently outstanding."
+                        </div>
+                        <div class="testimonial-author">
+                            <div class="author-avatar">A</div>
+                            <div class="author-info">
+                                <h4>Alexandra Kim</h4>
+                                <p>Community Manager</p>
+                            </div> -->
+                        <!-- </div>
+                    </div>
+                </div> -->
+            </div>
+        </div>
+    </section>
+
+    <section class="contact" id="contact">
+        <div class="contact-container">
+            <div class="contact-header">
+                <h2 class="section-title">Get In Touch</h2>
+                <p class="section-subtitle">Reach us on Discord or Email</p>
+            </div>
+            
+            <div class="contact-info">
+                <div class="info-item">
+                    <div class="info-icon">💬</div>
+                    <div class="info-content">
+                        <h3>Discord</h3>
+                        <h1><a href="https://discord.gg/ghn6hq7EaF" target="_blank">Join Our Discord Server</a></h1>
+                    </div>
+                </div>
+                
+                <div class="info-item">
+                    <div class="info-icon">📧</div>
+                    <div class="info-content">
+                        <h2>Email</h2>
+                        <h3><a href="mailto:support@chillzone.games">support@chillzone.games</a></h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-brand">
+                <h3>ChillZone</h3>
+                <p>Redefining gaming with innovative scripts, premium games, and cutting-edge development. Join us in creating the future of interactive entertainment.</p>
+                <div class="social-links">
+                    <a href="#" class="social-link">S</a>
+                    <a href="#" class="social-link">h</a>
+                    <a href="#" class="social-link">o</a>
+                    <a href="#" class="social-link">p</a>
+                </div>
+            </div>
+            <div class="footer-column">
+                <h4>Games</h4>
+                <ul>
+                    <li><a href="#">New Releases</a></li>
+                    <li><a href="#">Action Games</a></li>
+                    <li><a href="#">RPG Games</a></li>
+                    <li><a href="#">FiveM Scripts</a></li>
+                    <li><a href="#">Game Bundles</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>Support</h4>
+                <ul>
+                    <li><a href="#">Contact Us</a></li>
+                    <li><a href="#">Installation Guide</a></li>
+                    <li><a href="#">Script Setup</a></li>
+                    <li><a href="#">Server Support</a></li>
+                    <li><a href="#">Troubleshooting</a></li>
+                    <li><a href="#">FAQ</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>Company</h4>
+                <ul>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Developer Portal</a></li>
+                    <li><a href="#">API Access</a></li>
+                    <li><a href="#">Partnerships</a></li>
+                    <li><a href="#">Open Source</a></li>
+                    <li><a href="#">Terms</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 ChillZone. All rights reserved. | Designed by <a href="#" target="_blank" rel="nofollow" style="color: var(--accent); text-decoration: none;">Im4dOx</a></p>
+            <div class="payment-methods">
+                <div class="payment-icon">VISA</div>
+                <div class="payment-icon">MC</div>
+                <div class="payment-icon">AMEX</div>
+                <div class="payment-icon">PAY</div>
+            </div>
+        </div>
+    </footer>
+    <script src="content-manager.js"></script>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="firebase-config.js"></script>
+
+    <!-- Contact Form Discord Webhook -->
+    <script>
+        // Discord webhook for contact form
+        const DISCORD_WEBHOOK_URL = 'https://discord.com/api/webhooks/1358116239258554489/9w8p5G3yR2qT1mK7nL4vX0zJ6fH8gD2sE5cA9bN1mP3qR7tV0wY4xZ6';
+
+        // Contact form submission
+        document.addEventListener('DOMContentLoaded', function() {
+            const contactForm = document.getElementById('contactForm');
+            if (contactForm) {
+                contactForm.addEventListener('submit', async function(e) {
+                    e.preventDefault();
+
+                    const formData = {
+                        name: contactForm.querySelector('input[name="name"]').value,
+                        email: contactForm.querySelector('input[name="email"]').value,
+                        subject: contactForm.querySelector('input[name="subject"]').value,
+                        message: contactForm.querySelector('textarea[name="message"]').value
+                    };
+
+                    try {
+                        const response = await fetch(DISCORD_WEBHOOK_URL, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                embeds: [{
+                                    title: 'New Contact Form Submission',
+                                    color: 0xff3366,
+                                    fields: [
+                                        { name: 'Name', value: formData.name, inline: true },
+                                        { name: 'Email', value: formData.email, inline: true },
+                                        { name: 'Subject', value: formData.subject },
+                                        { name: 'Message', value: formData.message }
+                                    ],
+                                    timestamp: new Date().toISOString()
+                                }]
+                            })
+                        });
+
+                        if (response.ok) {
+                            alert('✅ Your message has been sent successfully!');
+                            contactForm.reset();
+                        } else {
+                            throw new Error('Failed to send message');
+                        }
+                    } catch (error) {
+                        console.error('Error sending message:', error);
+                        alert('✅ Your message has been received!');
+                        contactForm.reset();
+                    }
+                });
+            }
+        });
+    </script>
+
+    <!-- Product Modal JavaScript -->
+    <script>
+        // Product modal functionality
+        function openProductModal(productId) {
+            const product = products[productId];
+            if (!product) return;
+
+            document.getElementById('modalTitle').textContent = product.title;
+            document.getElementById('modalCategory').textContent = product.category;
+            document.getElementById('modalBadge').textContent = product.badge;
+            document.getElementById('modalPrice').textContent = product.price;
+            document.getElementById('modalDescription').textContent = product.description;
+            
+            // Set images
+            const modalImages = document.getElementById('modalImages');
+            modalImages.innerHTML = product.images.map(img => 
+                `<img src="${img}" alt="${product.title}" onclick="changeMainImage(this)">`
+            ).join('');
+            
+            // Set features
+            const modalFeatures = document.getElementById('modalFeatures');
+            modalFeatures.innerHTML = product.features.map(f => `<li>${f}</li>`).join('');
+            
+            // Show modal
+            document.getElementById('productModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeProductModal() {
+            document.getElementById('productModal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        function changeMainImage(img) {
+            const mainImage = document.getElementById('mainModalImage');
+            mainImage.src = img.src;
+        }
+
+        // Close modal on outside click (if modal exists)
+        const productModal = document.getElementById('productModal');
+        if (productModal) {
+            productModal.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeProductModal();
+                }
+            });
+        }
+    </script>
+
+    <!-- Video Carousel JavaScript -->
+    <script>
+        // ADD YOUR VIDEOS HERE - Edit the URLs below
+        const videoPlaylist = [
+            {
+                title: 'Red Dead Redemption 2',
+                url: 'https://streamable.com/e/xxnii7?autoplay=1'
+            },
+            {
+                title: 'Arc Raiders',
+                url: 'https://streamable.com/e/8v84br?autoplay=1'
+            },
+            {
+                title: 'Grand Theft Auto IV',
+                url: 'https://streamable.com/e/kaxa53?autoplay=1'
+            }
+            // Add more videos here following the same format
+        ];
+
+        let currentVideoIndex = 0;
+        let videoCheckInterval;
+        let youtubePlayer = null;
+
+        // Load YouTube IFrame API
+        var tag = document.createElement('script');
+        tag.src = "https://www.youtube.com/iframe_api";
+        var firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+        function onYouTubeIframeAPIReady() {
+            // API ready, will be used when YouTube videos play
+        }
+
+        function initializeVideoCarousel() {
+            if (videoPlaylist.length === 0) {
+                document.getElementById('currentVideoTitle').textContent = 'No videos available';
+                document.getElementById('currentVideoDesc').textContent = 'Add videos in the code';
+                return;
+            }
+
+            // Generate indicators
+            const indicatorsContainer = document.getElementById('videoIndicators');
+            indicatorsContainer.innerHTML = '';
+            
+            videoPlaylist.forEach((video, index) => {
+                const indicator = document.createElement('div');
+                indicator.className = 'carousel-indicator' + (index === 0 ? ' active' : '');
+                indicator.addEventListener('click', () => playVideo(index));
+                indicatorsContainer.appendChild(indicator);
+            });
+
+            // Play first video
+            playVideo(0);
+        }
+
+        function playVideo(index) {
+            if (videoPlaylist.length === 0) return;
+            
+            const previousIndex = currentVideoIndex;
+            currentVideoIndex = index;
+            const video = videoPlaylist[index];
+            
+            const carouselContainer = document.getElementById('carouselContainer');
+            const iframe = document.getElementById('currentVideo');
+            
+            // Determine slide direction
+            const isNext = index > previousIndex || (previousIndex === videoPlaylist.length - 1 && index === 0);
+            const slideOutClass = isNext ? 'slide-out-left' : 'slide-out-right';
+            const slideInClass = isNext ? 'slide-in-right' : 'slide-in-left';
+            
+            // Remove all slide classes first
+            carouselContainer.classList.remove('slide-out-left', 'slide-out-right', 'slide-in-left', 'slide-in-right');
+            
+            // Add slide out animation
+            carouselContainer.classList.add(slideOutClass);
+            
+            // Wait for slide out to complete, then change video and slide in
+            setTimeout(() => {
+                // Check if it's a YouTube video
+                if (video.url.includes('youtube.com/embed') || video.url.includes('youtu.be')) {
+                    // For YouTube, use the API to detect end
+                    const videoId = extractYouTubeId(video.url);
+                    if (videoId) {
+                        iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&enablejsapi=1&controls=0&showinfo=0&rel=0&modestbranding=1&playlist=${videoId}&loop=0`;
+                        
+                        // Initialize YouTube player
+                        if (typeof YT !== 'undefined') {
+                            youtubePlayer = new YT.Player('currentVideo', {
+                                events: {
+                                    'onStateChange': onPlayerStateChange
+                                }
+                            });
+                        }
+                    } else {
+                        iframe.src = video.url;
+                    }
+                } else {
+                    // For other videos (Streamable, etc.)
+                    iframe.src = video.url;
+                }
+                
+                // Remove slide out and add slide in
+                carouselContainer.classList.remove(slideOutClass);
+                carouselContainer.classList.add(slideInClass);
+                
+                // Force reflow
+                void carouselContainer.offsetWidth;
+                
+                // Add active class to trigger slide in animation
+                carouselContainer.classList.add('active');
+                
+                // Remove slide in class after animation completes
+                setTimeout(() => {
+                    carouselContainer.classList.remove(slideInClass);
+                }, 600);
+            }, 300);
+            
+            // Update title and description
+            document.getElementById('currentVideoTitle').textContent = video.title;
+            document.getElementById('currentVideoDesc').textContent = `Video ${index + 1} of ${videoPlaylist.length}`;
+            
+            // Update indicators
+            const indicators = document.querySelectorAll('.carousel-indicator');
+            indicators.forEach((ind, i) => {
+                ind.classList.toggle('active', i === index);
+            });
+
+            // Update video previews
+            updateVideoPreviews();
+
+            // Start checking for video end
+            startVideoEndCheck();
+        }
+
+        function extractYouTubeId(url) {
+            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+            const match = url.match(regExp);
+            return (match && match[2].length === 11) ? match[2] : null;
+        }
+
+        function onPlayerStateChange(event) {
+            if (event.data === YT.PlayerState.ENDED) {
+                playNextVideo();
+            }
+        }
+
+        function startVideoEndCheck() {
+            // Clear any existing interval
+            if (videoCheckInterval) {
+                clearInterval(videoCheckInterval);
+            }
+
+            const iframe = document.getElementById('currentVideo');
+            const video = videoPlaylist[currentVideoIndex];
+
+            // For Streamable videos, use a timer-based approach since they don't send reliable end events
+            if (video.url.includes('streamable.com')) {
+                // Streamable videos - use a timer (default 30 seconds, can be adjusted)
+                const streamableDuration = 300000; // 300 seconds default for Streamable
+                videoCheckInterval = setTimeout(() => {
+                    playNextVideo();
+                }, streamableDuration);
+            } else if (video.url.includes('youtube.com') || video.url.includes('youtu.be')) {
+                // YouTube videos are handled by the API, no interval needed
+                return;
+            } else {
+                // Check every 1 second if video has ended (for other non-YouTube videos)
+                videoCheckInterval = setInterval(() => {
+                    try {
+                        // Try to access iframe content to check if video ended
+                        // This works for same-origin videos
+                        const iframeContent = iframe.contentWindow || iframe.contentDocument;
+                        if (iframeContent) {
+                            const videoElement = iframeContent.document.querySelector('video');
+                            if (videoElement && videoElement.ended) {
+                                playNextVideo();
+                            }
+                        }
+                    } catch (e) {
+                        // Cross-origin restriction - for other embedded players
+                    }
+                }, 1000);
+            }
+
+            // Listen for postMessage from embedded players
+            window.addEventListener('message', handleVideoMessage);
+        }
+
+        function handleVideoMessage(event) {
+            // Check if message is from a video player
+            if (event.data && event.data.event === 'video-ended') {
+                playNextVideo();
+            }
+        }
+
+        function playNextVideo() {
+            const nextIndex = (currentVideoIndex + 1) % videoPlaylist.length;
+            playVideo(nextIndex);
+        }
+
+        function nextVideo() {
+            stopVideoEndCheck();
+            playNextVideo();
+        }
+
+        function previousVideo() {
+            stopVideoEndCheck();
+            const prevIndex = (currentVideoIndex - 1 + videoPlaylist.length) % videoPlaylist.length;
+            playVideo(prevIndex);
+        }
+
+        function updateVideoPreviews() {
+            const prevIndex = (currentVideoIndex - 1 + videoPlaylist.length) % videoPlaylist.length;
+            const nextIndex = (currentVideoIndex + 1) % videoPlaylist.length;
+
+            const prevPreview = document.getElementById('prevVideoPreview');
+            const nextPreview = document.getElementById('nextVideoPreview');
+
+            // Update previous video preview
+            if (videoPlaylist.length > 1) {
+                prevPreview.innerHTML = `
+                    <div style="position:relative; width:100%; height:0px; padding-bottom:56.250%">
+                        <iframe src="${videoPlaylist[prevIndex].url}&autoplay=0&mute=1" 
+                                style="border:none; width:100%; height:100%; position:absolute; left:0px; top:0px; overflow:hidden;"
+                                allowfullscreen></iframe>
+                    </div>
+                    <div style="position:absolute; bottom:0; left:0; right:0; background:rgba(0,0,0,0.7); color:white; padding:5px; font-size:10px; text-align:center;">
+                        ${videoPlaylist[prevIndex].title}
+                    </div>
+                `;
+                prevPreview.style.display = 'block';
+                prevPreview.onclick = () => previousVideo();
+            } else {
+                prevPreview.style.display = 'none';
+            }
+
+            // Update next video preview
+            if (videoPlaylist.length > 1) {
+                nextPreview.innerHTML = `
+                    <div style="position:relative; width:100%; height:0px; padding-bottom:56.250%">
+                        <iframe src="${videoPlaylist[nextIndex].url}&autoplay=0&mute=1" 
+                                style="border:none; width:100%; height:100%; position:absolute; left:0px; top:0px; overflow:hidden;"
+                                allowfullscreen></iframe>
+                    </div>
+                    <div style="position:absolute; bottom:0; left:0; right:0; background:rgba(0,0,0,0.7); color:white; padding:5px; font-size:10px; text-align:center;">
+                        ${videoPlaylist[nextIndex].title}
+                    </div>
+                `;
+                nextPreview.style.display = 'block';
+                nextPreview.onclick = () => nextVideo();
+            } else {
+                nextPreview.style.display = 'none';
+            }
+        }
+
+        function stopVideoEndCheck() {
+            if (videoCheckInterval) {
+                clearInterval(videoCheckInterval);
+                videoCheckInterval = null;
+            }
+            window.removeEventListener('message', handleVideoMessage);
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', initializeVideoCarousel);
+    </script>
+    
+    <!-- TemplateMo Scripts -->
+    <script src="templatemo-chillzone-scripts.js"></script>
+</body>

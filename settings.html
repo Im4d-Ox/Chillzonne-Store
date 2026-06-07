@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - ChillZone</title>
+    <link rel="stylesheet" href="templatemo-chillzone-fashion.css">
+    <style>
+        .settings-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+            padding: 20px;
+        }
+        
+        .settings-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 40px;
+            width: 100%;
+            max-width: 500px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .settings-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .settings-header h2 {
+            color: var(--text-light);
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        
+        .settings-header p {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            color: var(--text-light);
+            margin-bottom: 8px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            color: white;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--accent);
+            background: rgba(255, 255, 255, 0.08);
+        }
+        
+        .form-group input::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+        
+        .form-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .btn-primary {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            flex: 1;
+        }
+        
+        .btn-primary:hover {
+            background: var(--accent-hover);
+            transform: translateY(-1px);
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-light);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            flex: 1;
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+        
+        .btn-danger {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-danger:hover {
+            background: #ff1a4d;
+            transform: translateY(-1px);
+        }
+        
+        .success-message {
+            background: rgba(76, 175, 80, 0.1);
+            border: 1px solid #4CAF50;
+            color: #4CAF50;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            display: none;
+        }
+        
+        .error-message {
+            background: rgba(255, 51, 102, 0.1);
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            display: none;
+        }
+        
+        .danger-zone {
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 51, 102, 0.3);
+        }
+        
+        .danger-zone h3 {
+            color: var(--accent);
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+        
+        .danger-zone p {
+            color: var(--text-muted);
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+        
+        .back-nav {
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        .back-nav a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 13px;
+            transition: color 0.3s ease;
+        }
+        
+        .back-nav a:hover {
+            color: var(--accent);
+        }
+    </style>
+</head>
+<body>
+    <div class="settings-container">
+        <div class="settings-card">
+            <div class="settings-header">
+                <h2>Settings</h2>
+                <p>Manage your account preferences</p>
+            </div>
+            
+            <div class="success-message" id="successMessage"></div>
+            <div class="error-message" id="errorMessage"></div>
+            
+            <form id="settingsForm">
+                <div class="form-group">
+                    <label for="currentPassword">Current Password</label>
+                    <input type="password" id="currentPassword" name="currentPassword" placeholder="Enter current password">
+                </div>
+                
+                <div class="form-group">
+                    <label for="newPassword">New Password</label>
+                    <input type="password" id="newPassword" name="newPassword" placeholder="Enter new password">
+                </div>
+                
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm New Password</label>
+                    <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm new password">
+                </div>
+                
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary">Update Password</button>
+                    <button type="button" class="btn-secondary" onclick="window.location.href='index.html'">Cancel</button>
+                </div>
+            </form>
+            
+            <div class="danger-zone">
+                <h3>Danger Zone</h3>
+                <p>Once you delete your account, there is no going back.</p>
+                <button type="button" class="btn-danger" onclick="deleteAccount()">Delete Account</button>
+            </div>
+            
+            <div class="back-nav">
+                <a href="index.html">← Back to Website</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Settings Management
+        class SettingsManager {
+            constructor() {
+                this.initializeForm();
+            }
+            
+            initializeForm() {
+                const form = document.getElementById('settingsForm');
+                form.addEventListener('submit', (e) => this.handlePasswordUpdate(e));
+            }
+            
+            handlePasswordUpdate(e) {
+                e.preventDefault();
+                
+                const currentPassword = document.getElementById('currentPassword').value;
+                const newPassword = document.getElementById('newPassword').value;
+                const confirmPassword = document.getElementById('confirmPassword').value;
+                
+                // Validate form
+                const validation = this.validatePasswordForm(currentPassword, newPassword, confirmPassword);
+                if (!validation.valid) {
+                    this.showMessage('error', validation.message);
+                    return;
+                }
+                
+                // Update password
+                this.updateUserPassword(currentPassword, newPassword);
+                this.showMessage('success', 'Password updated successfully!');
+                
+                // Clear form
+                document.getElementById('settingsForm').reset();
+            }
+            
+            validatePasswordForm(currentPassword, newPassword, confirmPassword) {
+                if (!currentPassword || !newPassword || !confirmPassword) {
+                    return { valid: false, message: 'Please fill in all password fields' };
+                }
+                
+                if (newPassword.length < 6) {
+                    return { valid: false, message: 'New password must be at least 6 characters long' };
+                }
+                
+                if (newPassword !== confirmPassword) {
+                    return { valid: false, message: 'New passwords do not match' };
+                }
+                
+                return { valid: true };
+            }
+            
+            updateUserPassword(currentPassword, newPassword) {
+                const users = JSON.parse(localStorage.getItem('chillzoneUsers')) || [];
+                const currentUserId = sessionStorage.getItem('userId');
+                
+                // Find user
+                const user = users.find(user => user.id == currentUserId);
+                if (user) {
+                    // Verify current password
+                    const currentHash = btoa(currentPassword + 'chillzone_salt');
+                    if (user.password !== currentHash) {
+                        this.showMessage('error', 'Current password is incorrect');
+                        return;
+                    }
+                    
+                    // Update password
+                    user.password = btoa(newPassword + 'chillzone_salt');
+                    
+                    // Save updated users
+                    localStorage.setItem('chillzoneUsers', JSON.stringify(users));
+                }
+            }
+            
+            showMessage(type, message) {
+                const successElement = document.getElementById('successMessage');
+                const errorElement = document.getElementById('errorMessage');
+                
+                if (type === 'success') {
+                    successElement.textContent = message;
+                    successElement.style.display = 'block';
+                    errorElement.style.display = 'none';
+                } else {
+                    errorElement.textContent = message;
+                    errorElement.style.display = 'block';
+                    successElement.style.display = 'none';
+                }
+                
+                // Auto-hide after 5 seconds
+                setTimeout(() => {
+                    successElement.style.display = 'none';
+                    errorElement.style.display = 'none';
+                }, 5000);
+            }
+        }
+        
+        // Delete account function
+        function deleteAccount() {
+            if (!confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
+                return;
+            }
+            
+            if (!confirm('This will permanently delete all your data. Are you absolutely sure?')) {
+                return;
+            }
+            
+            const users = JSON.parse(localStorage.getItem('chillzoneUsers')) || [];
+            const currentUserId = sessionStorage.getItem('userId');
+            
+            // Remove user from database
+            const updatedUsers = users.filter(user => user.id != currentUserId);
+            localStorage.setItem('chillzoneUsers', JSON.stringify(updatedUsers));
+            
+            // Clear session and redirect
+            sessionStorage.clear();
+            window.location.href = 'index.html';
+        }
+        
+        // Initialize when DOM is ready
+        document.addEventListener('DOMContentLoaded', () => {
+            // Check if user is logged in
+            const isLoggedIn = sessionStorage.getItem('userLoggedIn') === 'true';
+            if (!isLoggedIn) {
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            new SettingsManager();
+        });
+    </script>
+</body>
+</html>

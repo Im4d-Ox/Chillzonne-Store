@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - ChillZone</title>
+    <link rel="stylesheet" href="templatemo-chillzone-fashion.css">
+    <style>
+        /* Define CSS variables for consistent theming */
+        :root {
+            --primary: #ff3366;
+            --primary-hover: #ff1a4d;
+            --secondary: #1a1a1a;
+            --accent: #ff3366;
+            --text-light: #ffffff;
+            --text-dark: #333333;
+            --text-muted: #cccccc;
+            --bg-dark: #0a0a0a;
+            --bg-card: rgba(255, 255, 255, 0.05);
+            --border: rgba(255, 255, 255, 0.1);
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            --success: #10b981;
+            --error: #ef4444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #0a0a0a 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .signup-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+        }
+
+        /* Animated background elements */
+        .signup-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background:
+                radial-gradient(circle at 30% 70%, rgba(255, 51, 102, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 70% 30%, rgba(16, 185, 129, 0.08) 0%, transparent 50%);
+            animation: float 8s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+        }
+
+        .signup-card {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 50px 40px;
+            width: 100%;
+            max-width: 480px;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .signup-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 51, 102, 0.08), rgba(16, 185, 129, 0.08), transparent);
+            animation: shimmer 4s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .signup-header {
+            text-align: center;
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .signup-header h2 {
+            color: var(--text-light);
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            letter-spacing: -0.5px;
+        }
+
+        .signup-header p {
+            color: var(--text-muted);
+            font-size: 16px;
+            font-weight: 400;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            color: var(--text-light);
+            margin-bottom: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 14px 16px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 2px solid transparent;
+            border-radius: 10px;
+            color: var(--text-light);
+            font-size: 15px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            outline: none;
+        }
+
+        .form-group input:focus {
+            border-color: var(--primary);
+            background: rgba(255, 255, 255, 0.12);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 51, 102, 0.2);
+        }
+
+        .form-group input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+            font-weight: 400;
+        }
+
+        .password-requirements {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 6px;
+            font-weight: 400;
+            opacity: 0.8;
+        }
+
+        .signup-btn {
+            width: 100%;
+            padding: 16px 24px;
+            background: linear-gradient(135deg, #ff3366 0%, #ff1a4d 100%);
+            border: 2px solid transparent;
+            border-radius: 12px;
+            color: white;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 16px;
+            position: relative;
+            overflow: hidden;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 15px rgba(255, 51, 102, 0.3);
+        }
+
+        .signup-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .signup-btn:hover::before {
+            left: 100%;
+        }
+
+        .signup-btn:hover {
+            background: linear-gradient(135deg, #ff1a4d 0%, #ff3366 100%);
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 51, 102, 0.5);
+        }
+
+        .signup-btn:active {
+            transform: translateY(0);
+            box-shadow: 0 4px 15px rgba(255, 51, 102, 0.3);
+        }
+
+        .signup-btn:disabled {
+            background: #666;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .error-message {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(255, 51, 102, 0.1));
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: var(--error);
+            padding: 14px 18px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            font-weight: 500;
+            display: none;
+            backdrop-filter: blur(10px);
+        }
+
+        .success-message {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(16, 185, 129, 0.08));
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            color: var(--success);
+            padding: 14px 18px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            font-weight: 500;
+            display: none;
+            backdrop-filter: blur(10px);
+        }
+
+        .back-links {
+            margin-top: 28px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .back-to-login,
+        .back-to-site {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .back-to-login a,
+        .back-to-site a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .back-to-login a:hover,
+        .back-to-site a:hover {
+            color: var(--primary);
+            transform: translateX(-3px);
+        }
+
+        .back-to-login a::before,
+        .back-to-site a::before {
+            content: '←';
+            transition: transform 0.3s ease;
+        }
+
+        .back-to-login a:hover::before,
+        .back-to-site a:hover::before {
+            transform: translateX(-3px);
+        }
+
+        /* Mobile responsive */
+        @media (max-width: 768px) {
+            .signup-card {
+                padding: 40px 30px;
+                margin: 20px;
+                max-width: none;
+            }
+
+            .signup-header h2 {
+                font-size: 28px;
+            }
+
+            .form-group input {
+                padding: 12px 14px;
+                font-size: 16px; /* Prevents zoom on iOS */
+            }
+
+            .signup-btn {
+                padding: 14px 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .signup-container {
+                padding: 10px;
+            }
+
+            .signup-card {
+                padding: 30px 20px;
+            }
+
+            .signup-header h2 {
+                font-size: 24px;
+            }
+        }
+
+        /* Loading animation */
+        .loading {
+            opacity: 0.7;
+            pointer-events: none;
+        }
+
+        .loading::after {
+            content: '';
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+            margin-left: 8px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Progress indicator for multi-step form */
+        .form-progress {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+            gap: 8px;
+        }
+
+        .progress-step {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .progress-step.active {
+            background: var(--primary);
+            transform: scale(1.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="signup-container">
+        <div class="signup-card">
+            <div class="signup-header">
+                <h2>Create Account</h2>
+                <p>Join ChillZone Gaming Platform</p>
+            </div>
+            
+            <div class="error-message" id="errorMessage"></div>
+            <div class="success-message" id="successMessage"></div>
+            
+            <form id="signupForm">
+                <div class="form-group">
+                    <label for="fullName">Full Name</label>
+                    <input type="text" id="fullName" name="fullName" placeholder="Enter your full name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" placeholder="Choose a username" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" placeholder="Create a password" required>
+                    <div class="password-requirements">
+                        Must be at least 6 characters long
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm your password" required>
+                </div>
+                
+                <button type="submit" class="signup-btn" id="signupBtn">Create Account</button>
+            </form>
+            
+            <div class="back-links">
+                <div class="back-to-login">
+                    <a href="login.html">Already have an account? Sign In</a>
+                </div>
+                
+                <div class="back-to-site">
+                    <a href="index.html">Back to Website</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="firebase-config.js"></script>
+    <script src="init-admin.js"></script>
+    <script>
+        // Check if Firebase loaded
+        window.addEventListener('load', function() {
+            if (typeof firebase === 'undefined') {
+                console.error('❌ Firebase SDKs failed to load');
+                alert('Firebase SDKs failed to load. Please check your internet connection.');
+            } else if (!firebase.auth) {
+                console.error('❌ Firebase Auth failed to load');
+                alert('Firebase Auth failed to load. Please check your internet connection.');
+            } else {
+                console.log('✅ Firebase SDKs loaded successfully');
+            }
+        });
+
+        // User registration system with Firebase
+        class UserRegistration {
+            constructor() {
+                this.users = JSON.parse(localStorage.getItem('chillzoneUsers')) || [];
+                this.initializeForm();
+            }
+            
+            initializeForm() {
+                const form = document.getElementById('signupForm');
+                form.addEventListener('submit', (e) => this.handleSubmit(e));
+            }
+            
+            async handleSubmit(e) {
+                e.preventDefault();
+                
+                const formData = {
+                    fullName: document.getElementById('fullName').value.trim(),
+                    email: document.getElementById('email').value.trim().toLowerCase(),
+                    username: document.getElementById('username').value.trim(),
+                    password: document.getElementById('password').value,
+                    confirmPassword: document.getElementById('confirmPassword').value
+                };
+                
+                // Validate form
+                const validation = this.validateForm(formData);
+                if (!validation.valid) {
+                    this.showError(validation.message);
+                    return;
+                }
+                
+                const signupBtn = document.getElementById('signupBtn');
+                signupBtn.classList.add('loading');
+                signupBtn.disabled = true;
+
+                // Try Firebase Auth first
+                if (typeof firebase !== 'undefined' && firebase.auth) {
+                    try {
+                        console.log('Attempting Firebase signup with email:', formData.email);
+                        // Create user in Firebase Auth
+                        const userCredential = await firebase.auth().createUserWithEmailAndPassword(formData.email, formData.password);
+                        console.log('Firebase Auth successful, user ID:', userCredential.user.uid);
+                        
+                        // Create user document in Firestore
+                        await db.collection('users').doc(userCredential.user.uid).set({
+                            fullName: formData.fullName,
+                            email: formData.email,
+                            username: formData.username.toLowerCase(),
+                            isAdmin: false,
+                            createdAt: new Date().toISOString(),
+                            isActive: true
+                        });
+                        console.log('Firestore document created successfully');
+                        
+                        this.showSuccess('Account created successfully! Redirecting to login...');
+                        
+                        setTimeout(() => {
+                            window.location.href = 'login.html';
+                        }, 2000);
+                        
+                    } catch (firebaseError) {
+                        console.error('Firebase signup failed:', firebaseError);
+                        console.error('Error code:', firebaseError.code);
+                        console.error('Error message:', firebaseError.message);
+                        alert('Firebase signup failed: ' + firebaseError.message + '\nError code: ' + firebaseError.code);
+                        signupBtn.classList.remove('loading');
+                        signupBtn.disabled = false;
+                    }
+                } else {
+                    console.error('Firebase not available');
+                    alert('Firebase is not available. Please check your internet connection and try again.');
+                    signupBtn.classList.remove('loading');
+                    signupBtn.disabled = false;
+                }
+            }
+
+            handleLocalStorageSignup(formData, signupBtn) {
+                // Check if user already exists
+                if (this.userExists(formData.email, formData.username)) {
+                    this.showError('User with this email or username already exists');
+                    signupBtn.classList.remove('loading');
+                    signupBtn.disabled = false;
+                    return;
+                }
+                
+                // Create new user
+                const newUser = {
+                    id: Date.now(),
+                    fullName: formData.fullName,
+                    email: formData.email,
+                    username: formData.username.toLowerCase(),
+                    password: this.hashPassword(formData.password),
+                    createdAt: new Date().toISOString(),
+                    isActive: true
+                };
+                
+                // Save user
+                this.users.push(newUser);
+                localStorage.setItem('chillzoneUsers', JSON.stringify(this.users));
+                
+                // Show success message
+                this.showSuccess('Account created successfully! Redirecting to login...');
+                
+                // Redirect to login after 2 seconds
+                setTimeout(() => {
+                    window.location.href = 'login.html';
+                }, 2000);
+            }
+            
+            validateForm(data) {
+                if (!data.fullName || !data.email || !data.username || !data.password || !data.confirmPassword) {
+                    return { valid: false, message: 'Please fill in all fields' };
+                }
+                
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(data.email)) {
+                    return { valid: false, message: 'Please enter a valid email address' };
+                }
+                
+                const usernameRegex = /^[a-zA-Z0-9_-]+$/;
+                if (!usernameRegex.test(data.username)) {
+                    return { valid: false, message: 'Username can only contain letters, numbers, underscores, and hyphens' };
+                }
+                
+                if (data.username.length < 3) {
+                    return { valid: false, message: 'Username must be at least 3 characters long' };
+                }
+                
+                if (data.password.length < 6) {
+                    return { valid: false, message: 'Password must be at least 6 characters long' };
+                }
+                
+                if (data.password !== data.confirmPassword) {
+                    return { valid: false, message: 'Passwords do not match' };
+                }
+                
+                return { valid: true };
+            }
+            
+            userExists(email, username) {
+                return this.users.some(user => 
+                    user.email === email || user.username === username
+                );
+            }
+            
+            hashPassword(password) {
+                return btoa(password + 'chillzone_salt');
+            }
+            
+            verifyPassword(password, hash) {
+                return this.hashPassword(password) === hash;
+            }
+            
+            showError(message) {
+                const errorElement = document.getElementById('errorMessage');
+                const successElement = document.getElementById('successMessage');
+                
+                errorElement.textContent = message;
+                errorElement.style.display = 'block';
+                successElement.style.display = 'none';
+                
+                setTimeout(() => {
+                    errorElement.style.display = 'none';
+                }, 5000);
+            }
+            
+            showSuccess(message) {
+                const errorElement = document.getElementById('errorMessage');
+                const successElement = document.getElementById('successMessage');
+                
+                successElement.textContent = message;
+                successElement.style.display = 'block';
+                errorElement.style.display = 'none';
+            }
+        }
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            new UserRegistration();
+        });
+        
+        if (sessionStorage.getItem('adminLoggedIn') === 'true') {
+            window.location.href = 'admin-dashboard.html';
+        }
+    </script>
+</body>
+</html>
