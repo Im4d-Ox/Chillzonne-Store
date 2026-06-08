@@ -337,8 +337,10 @@
             <ul class="sidebar-menu">
                 <li><a href="#" class="menu-item active" data-section="dashboard">📊 Dashboard</a></li>
                 <li><a href="#" class="menu-item" data-section="products">🎮 Products</a></li>
+                <li><a href="#" class="menu-item" data-section="news">📰 News</a></li>
                 <li><a href="#" class="menu-item" data-section="pages">📄 Pages</a></li>
                 <li><a href="#" class="menu-item" data-section="settings">⚙️ Settings</a></li>
+                <li><a href="#" class="menu-item" data-section="cleanup" style="color: #ff5757;">🗑️ Clear Data</a></li>
                 <!-- <li><a href="#" class="menu-item" data-section="testimonials">⭐ Testimonials</a></li> -->
                 <!-- <li><a href="#" class="menu-item" data-section="contact">📞 Contact</a></li> -->
                 <!-- <li><a href="#" class="menu-item" data-section="hero">🚀 Hero Section</a></li> -->
@@ -500,6 +502,88 @@
                         </thead>
                         <tbody id="productsTableBody">
                             <!-- Products will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- News Section -->
+            <div class="content-section" id="news">
+                <div class="section-header">
+                    <h2>News Management</h2>
+                    <p>Add, edit, or remove news posts that appear on your news page</p>
+                </div>
+
+                <div class="success-message" id="newsSuccess">News saved successfully!</div>
+
+                <div class="admin-form">
+                    <div class="form-header">
+                        <h3 style="color: var(--text-light); margin-bottom: 20px;">Add/Edit News Post</h3>
+                        <p style="color: var(--text-muted); margin-bottom: 20px;">Create or modify news posts that will appear on your news page.</p>
+                    </div>
+                    <form id="newsForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="newsTitle">News Title</label>
+                                <input type="text" id="newsTitle" name="newsTitle" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="newsCategory">Category</label>
+                                <select id="newsCategory" name="newsCategory" required>
+                                    <option value="new">New</option>
+                                    <option value="discount">Discount</option>
+                                    <option value="update">Update</option>
+                                    <option value="announcement">Announcement</option>
+                                    <option value="event">Event</option>
+                                    <option value="community">Community</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="newsDate">Date</label>
+                                <input type="date" id="newsDate" name="newsDate" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="newsImage">Image URL</label>
+                                <input type="text" id="newsImage" name="newsImage" placeholder="https://example.com/image.jpg">
+                            </div>
+                        </div>
+                        <div class="form-group full-width">
+                            <label for="newsShortDescription">Short Description (shown on card)</label>
+                            <textarea id="newsShortDescription" name="newsShortDescription" rows="3" placeholder="Brief description for news card..." required></textarea>
+                        </div>
+                        <div class="form-group full-width">
+                            <label for="newsFullContent">Full Content (shown when clicking Read More)</label>
+                            <textarea id="newsFullContent" name="newsFullContent" rows="8" placeholder="Full news content with details..." required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" id="newsFeatured" name="newsFeatured">
+                                Mark as Featured
+                            </label>
+                        </div>
+                        <div style="display: flex; gap: 10px; margin-top: 20px;">
+                            <button type="submit" class="btn btn-primary">Save News</button>
+                            <button type="button" class="btn btn-secondary" onclick="resetNewsForm()">Clear Form</button>
+                            <button type="button" class="btn btn-secondary" onclick="previewNewsPage()" style="margin-left: auto;">Preview News Page</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="data-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Category</th>
+                                <th>Date</th>
+                                <th>Featured</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="newsTableBody">
+                            <!-- News will be loaded here -->
                         </tbody>
                     </table>
                 </div>
@@ -828,6 +912,46 @@ Tech District</textarea>
                 </div>
             </div>
             
+            <!-- Cleanup Section -->
+            <div class="content-section" id="cleanup">
+                <div class="section-header">
+                    <h2>Data Cleanup</h2>
+                    <p>Clear all products and news data to start fresh</p>
+                </div>
+
+                <div class="success-message" id="cleanupSuccess">Data cleared successfully!</div>
+
+                <div class="admin-form">
+                    <div class="form-header">
+                        <h3 style="color: var(--text-light); margin-bottom: 20px;">Clear All Data</h3>
+                        <p style="color: var(--text-muted); margin-bottom: 20px;">This will permanently delete all products and news from both Firebase and localStorage. This action cannot be undone.</p>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 30px;">
+                        <div style="background: rgba(255, 87, 87, 0.1); border: 1px solid rgba(255, 87, 87, 0.3); border-radius: 12px; padding: 25px; text-align: center;">
+                            <div style="font-size: 48px; margin-bottom: 15px;">🎮</div>
+                            <h4 style="color: white; margin-bottom: 10px;">Clear Products</h4>
+                            <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 20px;">Delete all products from database</p>
+                            <button class="btn-delete" onclick="clearProducts()" style="padding: 12px 24px; font-size: 14px;">Clear Products</button>
+                        </div>
+
+                        <div style="background: rgba(255, 87, 87, 0.1); border: 1px solid rgba(255, 87, 87, 0.3); border-radius: 12px; padding: 25px; text-align: center;">
+                            <div style="font-size: 48px; margin-bottom: 15px;">📰</div>
+                            <h4 style="color: white; margin-bottom: 10px;">Clear News</h4>
+                            <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 20px;">Delete all news posts from database</p>
+                            <button class="btn-delete" onclick="clearNews()" style="padding: 12px 24px; font-size: 14px;">Clear News</button>
+                        </div>
+
+                        <div style="background: rgba(255, 87, 87, 0.2); border: 2px solid rgba(255, 87, 87, 0.5); border-radius: 12px; padding: 25px; text-align: center;">
+                            <div style="font-size: 48px; margin-bottom: 15px;">🗑️</div>
+                            <h4 style="color: #ff5757; margin-bottom: 10px;">Clear All Data</h4>
+                            <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 20px;">Delete everything (products + news)</p>
+                            <button class="btn-delete" onclick="clearAllData()" style="padding: 12px 24px; font-size: 14px; background: #ff5757;">Clear All</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
             <!-- Categories Section -->
             <div class="content-section" id="categories">
                 <div class="section-header">
@@ -931,6 +1055,7 @@ Tech District</textarea>
 
         // Data storage (shared with products page)
         let products = [];
+        let newsPosts = [];
 
         let testimonials = [
             { name: 'Sarah Chen', role: 'Server Owner', quote: 'ChillZone has completely transformed my FiveM server. The scripts are amazing and the performance is unmatched. Every feature feels like it was made by professional developers.', rating: 5 },
@@ -940,28 +1065,56 @@ Tech District</textarea>
 
         // Load data from localStorage or Firebase
         async function loadData() {
+            console.log('Loading data...');
+            console.log('Firebase db available:', typeof db !== 'undefined');
+            
             // Try loading from Firebase first
             if (typeof db !== 'undefined') {
                 try {
                     const productsDoc = await db.collection('storeData').doc('products').get();
                     if (productsDoc.exists) {
                         products = productsDoc.data().items || [];
+                        console.log('Loaded products from Firebase:', products.length);
+                    } else {
+                        console.log('No products found in Firebase');
+                        products = [];
                     }
+                    
+                    const newsSnapshot = await db.collection('news').get();
+                    newsPosts = [];
+                    newsSnapshot.forEach((doc) => {
+                        newsPosts.push({ id: doc.id, ...doc.data() });
+                    });
+                    console.log('Loaded news from Firebase:', newsPosts.length);
                 } catch (error) {
                     console.log('Firebase load failed, using localStorage:', error.message);
                 }
+            } else {
+                console.log('Firebase db is not defined');
             }
 
-            // Fallback to localStorage
+            // Always load from localStorage as backup/primary
             const savedProducts = localStorage.getItem('adminProducts');
             const savedTestimonials = localStorage.getItem('adminTestimonials');
+            const savedNews = localStorage.getItem('adminNews');
 
-            if (savedProducts && products.length === 0) products = JSON.parse(savedProducts);
+            if (savedProducts) {
+                products = JSON.parse(savedProducts);
+                console.log('Loaded products from localStorage:', products.length);
+            }
             if (savedTestimonials) testimonials = JSON.parse(savedTestimonials);
+            if (savedNews) {
+                newsPosts = JSON.parse(savedNews);
+                console.log('Loaded news from localStorage:', newsPosts.length);
+            }
+
+            console.log('Final products count:', products.length);
+            console.log('Final news count:', newsPosts.length);
 
             updateStats();
             renderProducts();
             renderTestimonials();
+            renderNews();
             loadOrders();
             renderActivityLogs();
         }
@@ -971,6 +1124,7 @@ Tech District</textarea>
             // Save to localStorage
             localStorage.setItem('adminProducts', JSON.stringify(products));
             localStorage.setItem('adminTestimonials', JSON.stringify(testimonials));
+            localStorage.setItem('adminNews', JSON.stringify(newsPosts));
 
             // Save to Firebase if available
             if (typeof db !== 'undefined') {
@@ -998,6 +1152,10 @@ Tech District</textarea>
             window.dispatchEvent(new StorageEvent('storage', {
                 key: 'adminTestimonials',
                 newValue: JSON.stringify(testimonials)
+            }));
+            window.dispatchEvent(new StorageEvent('storage', {
+                key: 'adminNews',
+                newValue: JSON.stringify(newsPosts)
             }));
         }
 
@@ -1118,9 +1276,13 @@ Tech District</textarea>
 
         // Update statistics
         function updateStats() {
-            document.getElementById('totalProducts').textContent = products.length;
-            document.getElementById('totalCategories').textContent = 4;
-            document.getElementById('totalTestimonials').textContent = testimonials.length;
+            const totalProductsEl = document.getElementById('totalProducts');
+            const totalCategoriesEl = document.getElementById('totalCategories');
+            const totalTestimonialsEl = document.getElementById('totalTestimonials');
+
+            if (totalProductsEl) totalProductsEl.textContent = products.length;
+            if (totalCategoriesEl) totalCategoriesEl.textContent = 4;
+            if (totalTestimonialsEl) totalTestimonialsEl.textContent = testimonials.length;
         }
 
         // Menu navigation
@@ -1206,6 +1368,276 @@ Tech District</textarea>
             window.open('products.html', '_blank');
         }
 
+        // News management
+        function renderNews() {
+            const tbody = document.getElementById('newsTableBody');
+            tbody.innerHTML = '';
+
+            newsPosts.forEach((news, index) => {
+                const row = tbody.insertRow();
+                row.innerHTML = `
+                    <td>
+                        <div style="font-weight: 600; color: var(--text-light);">${news.title}</div>
+                    </td>
+                    <td><span class="status-badge status-active">${news.category}</span></td>
+                    <td>${news.date}</td>
+                    <td>${news.featured ? '✅ Yes' : '❌ No'}</td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn-edit" onclick="editNews(${index})">Edit</button>
+                            <button class="btn-delete" onclick="deleteNews(${index})">Delete</button>
+                        </div>
+                    </td>
+                `;
+            });
+        }
+
+        function editNews(index) {
+            const news = newsPosts[index];
+            document.getElementById('newsTitle').value = news.title;
+            document.getElementById('newsCategory').value = news.category;
+            document.getElementById('newsDate').value = news.date;
+            document.getElementById('newsImage').value = news.image || '';
+            document.getElementById('newsShortDescription').value = news.shortDescription || news.description || '';
+            document.getElementById('newsFullContent').value = news.fullContent || '';
+            document.getElementById('newsFeatured').checked = news.featured || false;
+
+            // Store the ID for updating instead of removing
+            document.getElementById('newsForm').dataset.editingId = news.id;
+
+            // Scroll to form
+            document.querySelector('#news .admin-form').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function deleteNews(index) {
+            if (confirm('Are you sure you want to delete this news post? This action cannot be undone.')) {
+                const newsTitle = newsPosts[index].title;
+                const newsId = newsPosts[index].id;
+                
+                // Delete from Firebase
+                if (typeof db !== 'undefined' && newsId) {
+                    db.collection('news').doc(newsId).delete()
+                        .then(() => {
+                            console.log('News deleted from Firebase');
+                        })
+                        .catch((error) => {
+                            console.error('Error deleting news:', error);
+                        });
+                }
+                
+                newsPosts.splice(index, 1);
+                localStorage.setItem('adminNews', JSON.stringify(newsPosts));
+                renderNews();
+                logActivity('News Deleted', `News: ${newsTitle}`);
+                showMessage('newsSuccess', 'News deleted successfully!');
+            }
+        }
+
+        function resetNewsForm() {
+            document.getElementById('newsForm').reset();
+        }
+
+        function previewNewsPage() {
+            window.open('news.html', '_blank');
+        }
+
+        // Clear products from Firebase and localStorage
+        async function clearProducts() {
+            if (!confirm('Are you sure you want to delete ALL products? This action cannot be undone.')) {
+                return;
+            }
+
+            try {
+                // Clear from Firebase
+                if (typeof db !== 'undefined') {
+                    const productsDoc = await db.collection('storeData').doc('products').get();
+                    if (productsDoc.exists) {
+                        await db.collection('storeData').doc('products').delete();
+                        console.log('Products deleted from Firebase');
+                    }
+                }
+
+                // Clear from localStorage
+                localStorage.removeItem('adminProducts');
+                products = [];
+
+                // Update UI
+                renderProducts();
+                updateStats();
+                logActivity('Products Cleared', 'All products deleted');
+                showMessage('cleanupSuccess', 'All products cleared successfully!');
+            } catch (error) {
+                console.error('Error clearing products:', error);
+                alert('Error clearing products: ' + error.message);
+            }
+        }
+
+        // Clear news from Firebase and localStorage
+        async function clearNews() {
+            if (!confirm('Are you sure you want to delete ALL news posts? This action cannot be undone.')) {
+                return;
+            }
+
+            try {
+                // Clear from Firebase
+                if (typeof db !== 'undefined') {
+                    const newsSnapshot = await db.collection('news').get();
+                    const batch = db.batch();
+                    newsSnapshot.forEach((doc) => {
+                        batch.delete(doc.ref);
+                    });
+                    await batch.commit();
+                    console.log('News deleted from Firebase');
+                }
+
+                // Clear from localStorage
+                localStorage.removeItem('adminNews');
+                newsPosts = [];
+
+                // Update UI
+                renderNews();
+                logActivity('News Cleared', 'All news posts deleted');
+                showMessage('cleanupSuccess', 'All news cleared successfully!');
+            } catch (error) {
+                console.error('Error clearing news:', error);
+                alert('Error clearing news: ' + error.message);
+            }
+        }
+
+        // Clear all data (products + news)
+        async function clearAllData() {
+            if (!confirm('Are you sure you want to delete ALL data (products and news)? This action cannot be undone.')) {
+                return;
+            }
+
+            if (!confirm('This is your FINAL warning. All data will be permanently deleted. Continue?')) {
+                return;
+            }
+
+            try {
+                // Clear products
+                await clearProductsInternal();
+                // Clear news
+                await clearNewsInternal();
+
+                // Update UI
+                renderProducts();
+                renderNews();
+                updateStats();
+                logActivity('All Data Cleared', 'Products and news deleted');
+                showMessage('cleanupSuccess', 'All data cleared successfully!');
+            } catch (error) {
+                console.error('Error clearing data:', error);
+                alert('Error clearing data: ' + error.message);
+            }
+        }
+
+        async function clearProductsInternal() {
+            if (typeof db !== 'undefined') {
+                const productsDoc = await db.collection('storeData').doc('products').get();
+                if (productsDoc.exists) {
+                    await db.collection('storeData').doc('products').delete();
+                }
+            }
+            localStorage.removeItem('adminProducts');
+            products = [];
+        }
+
+        async function clearNewsInternal() {
+            if (typeof db !== 'undefined') {
+                const newsSnapshot = await db.collection('news').get();
+                const batch = db.batch();
+                newsSnapshot.forEach((doc) => {
+                    batch.delete(doc.ref);
+                });
+                await batch.commit();
+            }
+            localStorage.removeItem('adminNews');
+            newsPosts = [];
+        }
+
+        document.getElementById('newsForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const editingId = document.getElementById('newsForm').dataset.editingId;
+            const newsData = {
+                title: document.getElementById('newsTitle').value,
+                category: document.getElementById('newsCategory').value,
+                date: document.getElementById('newsDate').value,
+                image: document.getElementById('newsImage').value,
+                shortDescription: document.getElementById('newsShortDescription').value,
+                fullContent: document.getElementById('newsFullContent').value,
+                description: document.getElementById('newsShortDescription').value, // For backward compatibility
+                featured: document.getElementById('newsFeatured').checked,
+                createdAt: new Date().toISOString()
+            };
+
+            // Save to Firebase
+            if (typeof db !== 'undefined') {
+                if (editingId) {
+                    // Update existing news
+                    db.collection('news').doc(editingId).update(newsData)
+                        .then(() => {
+                            newsData.id = editingId;
+                            // Update in local array
+                            const index = newsPosts.findIndex(n => n.id === editingId);
+                            if (index !== -1) {
+                                newsPosts[index] = newsData;
+                            } else {
+                                newsPosts.push(newsData);
+                            }
+                            localStorage.setItem('adminNews', JSON.stringify(newsPosts));
+                            renderNews();
+                            resetNewsForm();
+                            delete document.getElementById('newsForm').dataset.editingId;
+                            logActivity('News Updated', `News: ${newsData.title}`);
+                            showMessage('newsSuccess', 'News updated successfully!');
+                        })
+                        .catch((error) => {
+                            console.error('Error updating news:', error);
+                            alert('Error updating news: ' + error.message);
+                        });
+                } else {
+                    // Create new news
+                    db.collection('news').add(newsData)
+                        .then((docRef) => {
+                            newsData.id = docRef.id;
+                            newsPosts.push(newsData);
+                            localStorage.setItem('adminNews', JSON.stringify(newsPosts));
+                            renderNews();
+                            resetNewsForm();
+                            logActivity('News Added', `News: ${newsData.title}`);
+                            showMessage('newsSuccess', 'News saved successfully!');
+                            console.log('News saved to Firebase with ID:', docRef.id);
+                        })
+                        .catch((error) => {
+                            console.error('Error saving news:', error);
+                            alert('Error saving news: ' + error.message);
+                        });
+                }
+            } else {
+                // Fallback to localStorage
+                if (editingId) {
+                    newsData.id = editingId;
+                    const index = newsPosts.findIndex(n => n.id === editingId);
+                    if (index !== -1) {
+                        newsPosts[index] = newsData;
+                    } else {
+                        newsPosts.push(newsData);
+                    }
+                } else {
+                    newsData.id = Date.now().toString();
+                    newsPosts.push(newsData);
+                }
+                localStorage.setItem('adminNews', JSON.stringify(newsPosts));
+                renderNews();
+                resetNewsForm();
+                delete document.getElementById('newsForm').dataset.editingId;
+                logActivity(editingId ? 'News Updated' : 'News Added', `News: ${newsData.title}`);
+                showMessage('newsSuccess', 'News saved successfully!');
+            }
+        });
+
         document.getElementById('productForm').addEventListener('submit', function(e) {
             e.preventDefault();
 
@@ -1229,6 +1661,8 @@ Tech District</textarea>
                 );
             }
 
+            console.log('Creating/updating product:', productData.name);
+
             // Check if editing existing product
             const existingIndex = products.findIndex(p => p.name === productData.name);
             if (existingIndex >= 0) {
@@ -1241,7 +1675,22 @@ Tech District</textarea>
                 showMessage('productSuccess', 'Product added successfully!');
             }
 
-            saveData();
+            // Save to localStorage immediately
+            localStorage.setItem('adminProducts', JSON.stringify(products));
+            console.log('Products saved to localStorage:', products.length);
+
+            // Save to Firebase
+            if (typeof db !== 'undefined') {
+                db.collection('storeData').doc('products').set({
+                    items: products,
+                    updatedAt: new Date().toISOString()
+                }).then(() => {
+                    console.log('Products saved to Firebase');
+                }).catch((error) => {
+                    console.error('Firebase save error:', error);
+                });
+            }
+
             renderProducts();
             updateStats();
             resetProductForm();
@@ -1444,7 +1893,29 @@ Tech District</textarea>
         }
 
         // Load saved data on page load
-        loadData();
+        console.log('Page loaded, checking Firebase availability...');
+        
+        // Firebase is already initialized in firebase-config.js
+        if (typeof db !== 'undefined') {
+            console.log('Firebase db is available immediately, loading data...');
+            loadData();
+        } else {
+            console.log('Firebase db not available yet, waiting for initialization...');
+            // Wait for Firebase to be ready
+            let attempts = 0;
+            const checkInterval = setInterval(() => {
+                attempts++;
+                if (typeof db !== 'undefined') {
+                    console.log('Firebase db is now available after', attempts, 'attempts');
+                    clearInterval(checkInterval);
+                    loadData();
+                } else if (attempts >= 10) {
+                    console.log('Firebase db still not available after 10 attempts, loading from localStorage only');
+                    clearInterval(checkInterval);
+                    loadData();
+                }
+            }, 200);
+        }
 
         // Load saved contact data
         const savedContact = localStorage.getItem('adminContact');

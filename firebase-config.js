@@ -24,6 +24,9 @@ try {
 // Initialize services (only Firestore needed for products)
 const db = firebase.firestore();
 
+// Make db globally accessible
+window.db = db;
+
 // Export for use in other files
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = { firebase, db };

@@ -21,6 +21,11 @@ service cloud.firestore {
       allow read, write: if true;
     }
     
+    // Allow everyone to read and write news posts
+    match /news/{document=**} {
+      allow read, write: if true;
+    }
+    
     // Default deny for everything else
     match /{document=**} {
       allow read, write: if false;

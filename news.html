@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>News & Updates - Chillzonne Store</title>
+    <link rel="stylesheet" href="templatemo-chillzone-fashion.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Admin Button Styling */
+        .auth-buttons {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-left: 20px;
+        }
+
+        .auth-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 18px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            border: 2px solid transparent;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .auth-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .auth-btn:hover::before {
+            left: 100%;
+        }
+
+        .auth-btn-admin {
+            background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%);
+            color: white;
+            border-color: rgba(108, 92, 231, 0.3);
+            box-shadow: 0 4px 20px rgba(108, 92, 231, 0.3);
+        }
+
+        .auth-btn-admin:hover {
+            background: linear-gradient(135deg, #5b4cdb 0%, #8b7cfe 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(108, 92, 231, 0.5);
+            border-color: rgba(108, 92, 231, 0.6);
+        }
+
+        .auth-btn-icon {
+            font-size: 14px;
+            transition: transform 0.3s ease;
+        }
+
+        .auth-btn:hover .auth-btn-icon {
+            transform: scale(1.1);
+        }
+
+        .auth-btn-text {
+            font-weight: 700;
+            transition: all 0.3s ease;
+        }
+
+        /* Mobile responsive auth buttons */
+        @media (max-width: 768px) {
+            .auth-buttons {
+                margin-left: 10px;
+                gap: 8px;
+            }
+
+            .auth-btn {
+                padding: 8px 14px;
+                font-size: 12px;
+            }
+
+            .auth-btn-text {
+                display: none;
+            }
+
+            .auth-btn-icon {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav id="navbar">
+        <div class="nav-container">
+            <a href="#home" class="logo-link">
+                <svg class="logo-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#ff3366;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#ff1a4d;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    <polygon points="50,10 20,50 50,90 80,50" fill="none" stroke="url(#logoGrad)" stroke-width="3"/>
+                    <circle cx="50" cy="50" r="5" fill="url(#logoGrad)"/>
+                </svg>
+                <span class="logo-text">ChillZone</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html#home" class="nav-link">Home</a></li>
+                <li><a href="products.html" class="nav-link">Products</a></li>
+                <li><a href="news.html" class="nav-link active">News</a></li>
+                <li><a href="index.html#featured" class="nav-link">Featured</a></li>
+                <li><a href="index.html#contact" class="nav-link">Contact</a></li>
+            </ul>
+
+            <!-- Admin Button Only -->
+            <div class="auth-buttons" id="authButtons">
+                <a href="admin-login.html" class="auth-btn auth-btn-admin">
+                    <span class="auth-btn-text">Admin</span>
+                    <span class="auth-btn-icon">🛡️</span>
+                </a>
+            </div>
+
+            <!-- Mobile Menu Toggle -->
+            <button id="menuToggle" class="menu-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <div class="mobile-nav" id="mobileNav">
+        <ul class="mobile-nav-links">
+            <li><a href="index.html#home">Home</a></li>
+            <li><a href="products.html">Products</a></li>
+            <li><a href="news.html">News</a></li>
+            <li><a href="index.html#featured">Featured</a></li>
+            <li><a href="index.html#contact">Contact</a></li>
+        </ul>
+        <div class="mobile-auth-buttons" id="mobileAuthButtons">
+            <a href="admin-login.html" class="mobile-auth-btn admin">Admin</a>
+        </div>
+    </div>
+
+    <!-- News Section -->
+    <section class="news-section" id="news">
+        <div class="news-container">
+            <div class="news-header">
+                <h1>News & Updates</h1>
+                <p>Stay updated with the latest store news, discounts, and announcements</p>
+            </div>
+
+            <!-- Featured News -->
+            <div class="featured-news" id="featuredNewsContainer">
+                <!-- Featured news will be loaded from Firebase -->
+            </div>
+
+            <!-- News Grid -->
+            <div class="news-grid" id="newsGridContainer">
+                <!-- News items will be loaded from Firebase -->
+            </div>
+        </div>
+    </section>
+
+    <!-- News Modal -->
+    <div id="newsModal" class="news-modal">
+        <div class="news-modal-content">
+            <button class="news-modal-close" onclick="closeNewsModal()">&times;</button>
+            <div class="news-modal-header">
+                <span class="news-modal-badge" id="modalBadge">Featured</span>
+                <h2 id="modalTitle">News Title</h2>
+                <p class="news-modal-date" id="modalDate">June 7, 2026</p>
+            </div>
+            <div class="news-modal-body">
+                <img id="modalImage" src="" alt="News Image" class="news-modal-image">
+                <div class="news-modal-text" id="modalContent">
+                    <!-- Full content will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>ChillZone Store</h3>
+                <p>Your premium destination for gaming accounts, FiveM scripts, and digital products.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="index.html#home">Home</a></li>
+                    <li><a href="products.html">Products</a></li>
+                    <li><a href="news.html">News</a></li>
+                    <li><a href="index.html#contact">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Contact</h3>
+                <ul>
+                    <li>Email: support@chillzone.com</li>
+                    <li>Discord: https://discord.gg/NMwk6kWCMg</li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 ChillZone Store. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="firebase-config.js"></script>
+
+    <script src="templatemo-chillzone-scripts.js"></script>
+    <script>
+        // Store news data for modal
+        let newsDataMap = {};
+
+        // Load news from Firebase
+        function loadNewsFromFirebase() {
+            const db = firebase.firestore();
+            const newsContainer = document.getElementById('newsGridContainer');
+            const featuredContainer = document.getElementById('featuredNewsContainer');
+            
+            // Load all news posts
+            db.collection('news').orderBy('createdAt', 'desc').get()
+                .then((querySnapshot) => {
+                    let featuredHTML = '';
+                    let gridHTML = '';
+                    let hasFeatured = false;
+                    
+                    querySnapshot.forEach((doc) => {
+                        const news = doc.data();
+                        const newsId = doc.id;
+                        
+                        // Store news data for modal
+                        newsDataMap[newsId] = news;
+                        
+                        const newsCard = `
+                            <div class="news-card">
+                                <div class="news-image">
+                                    <img src="${news.image || 'images/arc-raiders-weavs.jpg'}" alt="${news.title}">
+                                </div>
+                                <div class="news-content">
+                                    <span class="news-badge ${news.category || 'new'}">${news.category || 'New'}</span>
+                                    <h3>${news.title}</h3>
+                                    <p class="news-date">${news.date || 'Just now'}</p>
+                                    <p>${news.shortDescription || news.description || ''}</p>
+                                    <a href="#" class="read-more-btn" onclick="openNewsModal('${news.id}')">Read More</a>
+                                </div>
+                            </div>
+                        `;
+                        
+                        if (news.featured && !hasFeatured) {
+                            featuredHTML = `
+                                <div class="featured-news-card">
+                                    <div class="featured-news-image">
+                                        <img src="${news.image || 'images/arc-raiders-weavs.jpg'}" alt="${news.title}">
+                                    </div>
+                                    <div class="featured-news-content">
+                                        <span class="news-badge featured">Featured</span>
+                                        <h2>${news.title}</h2>
+                                        <p class="news-date">${news.date || 'Just now'}</p>
+                                        <p>${news.shortDescription || news.description || ''}</p>
+                                        <a href="#" class="read-more-btn" onclick="openNewsModal('${news.id}')">Read More</a>
+                                    </div>
+                                </div>
+                            `;
+                            hasFeatured = true;
+                        } else {
+                            gridHTML += newsCard;
+                        }
+                    });
+                    
+                    if (featuredContainer) {
+                        if (featuredHTML) {
+                            featuredContainer.innerHTML = featuredHTML;
+                        } else {
+                            featuredContainer.innerHTML = `
+                                <div style="text-align: center; padding: 60px 20px; color: var(--text-muted);">
+                                    <div style="font-size: 48px; margin-bottom: 20px;">📰</div>
+                                    <h3 style="color: white; margin-bottom: 10px;">No Featured News Yet</h3>
+                                    <p>Check back later for updates!</p>
+                                </div>
+                            `;
+                        }
+                    }
+                    if (newsContainer) {
+                        if (gridHTML) {
+                            newsContainer.innerHTML = gridHTML;
+                        } else {
+                            newsContainer.innerHTML = `
+                                <div style="text-align: center; padding: 60px 20px; color: var(--text-muted);">
+                                    <div style="font-size: 48px; margin-bottom: 20px;">📝</div>
+                                    <h3 style="color: white; margin-bottom: 10px;">No News Posts Yet</h3>
+                                    <p>Admin will add news posts soon!</p>
+                                </div>
+                            `;
+                        }
+                    }
+                })
+                .catch((error) => {
+                    console.error('Error loading news:', error);
+                    // Show empty state if Firebase fails
+                    const featuredContainer = document.getElementById('featuredNewsContainer');
+                    const newsContainer = document.getElementById('newsGridContainer');
+                    
+                    if (featuredContainer) {
+                        featuredContainer.innerHTML = `
+                            <div style="text-align: center; padding: 60px 20px; color: var(--text-muted);">
+                                <div style="font-size: 48px; margin-bottom: 20px;">📰</div>
+                                <h3 style="color: white; margin-bottom: 10px;">No Featured News Yet</h3>
+                                <p>Check back later for updates!</p>
+                            </div>
+                        `;
+                    }
+                    if (newsContainer) {
+                        newsContainer.innerHTML = `
+                            <div style="text-align: center; padding: 60px 20px; color: var(--text-muted);">
+                                <div style="font-size: 48px; margin-bottom: 20px;">📝</div>
+                                <h3 style="color: white; margin-bottom: 10px;">No News Posts Yet</h3>
+                                <p>Admin will add news posts soon!</p>
+                            </div>
+                        `;
+                    }
+                });
+        }
+        
+        // Open news modal with full content
+        function openNewsModal(newsId) {
+            const news = newsDataMap[newsId];
+            if (!news) return;
+            
+            document.getElementById('modalTitle').textContent = news.title;
+            document.getElementById('modalDate').textContent = news.date || 'Just now';
+            document.getElementById('modalBadge').textContent = news.category || 'Featured';
+            document.getElementById('modalBadge').className = `news-modal-badge ${news.category || 'featured'}`;
+            document.getElementById('modalImage').src = news.image || 'images/arc-raiders-weavs.jpg';
+            document.getElementById('modalContent').textContent = news.fullContent || news.description || 'No content available.';
+            
+            const modal = document.getElementById('newsModal');
+            modal.classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        // Close news modal
+        function closeNewsModal() {
+            const modal = document.getElementById('newsModal');
+            modal.classList.remove('show');
+            document.body.style.overflow = 'auto';
+        }
+        
+        // Close modal when clicking outside
+        document.getElementById('newsModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeNewsModal();
+            }
+        });
+        
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeNewsModal();
+            }
+        });
+        
+        // Load news when page loads
+        document.addEventListener('DOMContentLoaded', loadNewsFromFirebase);
+    </script>
+</body>
+</html>
