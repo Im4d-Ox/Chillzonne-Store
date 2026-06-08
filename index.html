@@ -1534,7 +1534,16 @@ https://templatemo.com/tm-599-noir-fashion
     <nav id="navbar">
         <div class="nav-container">
             <a href="#home" class="logo-link">
-                <img src="images/logo.png" alt="ChillZone Logo" class="logo-image">
+                <svg class="logo-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#fff;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#ff3366;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    <polygon points="50,10 20,50 50,90 80,50" fill="none" stroke="url(#logoGrad)" stroke-width="3"/>
+                    <circle cx="50" cy="50" r="5" fill="url(#logoGrad)"/>
+                </svg>
                 <span class="logo-text">ChillZone</span>
             </a>
             <ul class="nav-links">
